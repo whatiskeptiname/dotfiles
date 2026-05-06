@@ -1,0 +1,112 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
+
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["cpu", "temperature", "memory", "custom/gpu", "disk", "battery", "backlight", "pulseaudio", "pulseaudio#source", "tray"],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true
+    },
+
+    "clock": {
+        "timezone": "Asia/Kathmandu",
+        "format": "{:%H∶%M∶%S}",
+        "format-alt": "{:%a, %Y-%m-%d %H∶%M∶%S}",
+        "interval": 1,
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "cpu": {
+        "format": "󰘚 {usage}%",
+        "interval": 1,
+        "tooltip": true
+    },
+
+    "custom/gpu": {
+        "exec": "~/.config/waybar/scripts/gpu.sh",
+        "return-type": "json",
+        "format": "󰾲 {}",
+        "interval": 2,
+        "tooltip": true
+    },
+
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": ["󱃃", "󰔏", "󱃂"]
+    },
+
+    "memory": {
+        "format": "󰍛 {used:.1f}G",
+        "tooltip-format": "{used:.1f}G used of {total:.1f}G ({percentage}%)",
+        "interval": 1
+    },
+
+    "disk": {
+        "format": "󰋊 {free}",
+        "tooltip-format": "{free} free of {total} ({percentage_free}%)",
+        "path": "/"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}% {time}",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-full": "󰁹 {capacity}%",
+        "format-time": "{H}∶{M:02}",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "backlight": {
+        "device": "amdgpu_bl2",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl set +5%",
+        "on-scroll-down": "brightnessctl set 5%-"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "headphone": "󰋋",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "on-scroll-up": "~/.config/waybar/scripts/mic-vol.sh sink up",
+        "on-scroll-down": "~/.config/waybar/scripts/mic-vol.sh sink down"
+    },
+
+    "pulseaudio#source": {
+        "format": "{format_source}",
+        "format-source": "󰍬",
+        "format-source-muted": "󰍭",
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-scroll-up": "~/.config/waybar/scripts/mic-vol.sh source up",
+        "on-scroll-down": "~/.config/waybar/scripts/mic-vol.sh source down",
+        "tooltip-format": "Mic: {source_volume}%"
+    },
+
+    "network": {
+        "format-wifi": "󰖩 {essid} ({signalStrength}%)",
+        "format-ethernet": "󰈀 {ipaddr}",
+        "format-disconnected": "󰖪",
+        "format-alt": "󰈀 {ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{essid} — {ifname} via {gwaddr}"
+    },
+
+    "tray": {
+        "icon-size": 13,
+        "spacing": 8
+    }
+}
