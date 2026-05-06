@@ -31,12 +31,33 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 exec_always $HOME/.config/sway/scripts/waybar.sh
 
+# ── Tune these ──────────────────────────
+set $border_width  1
+set $gaps_inner    10
+set $gaps_outer    1
+# ────────────────────────────────────────
+
+font pango:CaskaydiaCove Nerd Font Propo 10
+default_border pixel $border_width
+default_floating_border normal $border_width
+titlebar_padding 4 2
+
+exec_always swaymsg gaps inner all set $gaps_inner
+exec_always swaymsg gaps outer all set $gaps_outer
+smart_gaps off
+smart_borders off
+
+# Colors:              border    background  text      indicator  child_border
+client.focused          #7aa2f7 #08080b #acb0d0 #7aa2f7 #7aa2f7
+client.focused_inactive #787c99 #08080b #787c99 #787c99 #2a2a3d
+client.unfocused        #08080b #08080b #787c99 #08080b #08080b
+client.urgent           #f7768e #08080b #f7768e #f7768e #f7768e
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg, jxl-pixbuf-loader
-output * bg /usr/share/backgrounds/default.jxl fill
-output * bg /home/wikiN/Documents/self/dotfiles/images/wallpaper.png fill
+output * bg /home/wikiN/Documents/self/dotfiles/wallpapers/pain.png fill
 output eDP-1 scale 1.5
 output eDP-2 scale 1.5
 #
