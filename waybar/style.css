@@ -120,6 +120,12 @@
     margin: 0 3px;
 }
 
+#workspaces button.focused {
+    color: @blue;
+    border-bottom: 2px solid @blue;
+    border-radius: 0;
+}
+
 #workspaces button:hover {
     background: transparent;
 }
