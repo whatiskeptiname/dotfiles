@@ -210,6 +210,9 @@ bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ tog
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 
+# Screenshot
+bindsym Print exec flameshot gui
+
 # App shortcuts
 bindsym $mod+c exec google-chrome
 bindsym $mod+p exec code
@@ -217,6 +220,10 @@ bindsym $mod+o exec thunar
 
 # Power menu
 bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
+
+# Autostart
+exec copyq
+exec flameshot
 
 # Waybar Script
 exec_always $HOME/.config/sway/scripts/waybar.sh
