@@ -127,8 +127,9 @@
 }
 
 @keyframes blink {
-    0%, 100% { color: #f7768e; border-bottom-color: #f7768e; }
-    50%       { color: transparent; border-bottom-color: transparent; }
+    0%   { color: #f7768e; border-bottom-color: #f7768e; }
+    50%  { color: transparent; border-bottom-color: transparent; }
+    100% { color: #f7768e; border-bottom-color: #f7768e; }
 }
 
 #workspaces button.urgent {
