@@ -126,6 +126,18 @@
     border-radius: 0;
 }
 
+@keyframes blink {
+    0%, 100% { color: #f7768e; border-bottom-color: #f7768e; }
+    50%       { color: transparent; border-bottom-color: transparent; }
+}
+
+#workspaces button.urgent {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
 #workspaces button:hover {
     background: transparent;
 }
