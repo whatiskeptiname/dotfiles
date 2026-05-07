@@ -1,4 +1,4 @@
-# Logo key. Use Mod1 for Alt.
+# Logo key. Use Mod1 for Alt, Mod4 for win.
 set $mod Mod4
 
 # Home row direction keys, like vim
@@ -16,7 +16,10 @@ set $rofi_cmd rofi \
 
 # Shows a combined list of the applications with desktop files and
 # executables from PATH.
-set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
+set $menu $rofi_cmd -show combi -combi-modes drun #run -modes combi
+
+# Window switcher
+bindsym $mod+Tab exec $rofi_cmd -show window
 
 # Theme
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
@@ -78,9 +81,6 @@ input type:touchpad {
 
     # Start your launcher
     bindsym $mod+d exec $menu
-
-    # Window switcher
-    bindsym $mod+Tab exec $rofi_cmd -show window
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -201,6 +201,14 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
+
+# App shortcuts
+bindsym $mod+c exec google-chrome
+bindsym $mod+p exec code
+bindsym $mod+o exec thunar
+
+# Power menu
+bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
 
 # Waybar Script
 exec_always $HOME/.config/sway/scripts/waybar.sh
