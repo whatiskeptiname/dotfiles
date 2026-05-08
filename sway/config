@@ -21,8 +21,10 @@ set $menu $rofi_cmd -show combi -combi-modes drun #run -modes combi
 # Window switcher
 bindsym $mod+Tab exec $rofi_cmd -show window
 
-# Theme
+# Theme — dark mode for GTK3, GTK4, and Qt apps
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+exec_always gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
 
 # Windows Border
 # ── Tune these ──────────────────────────
@@ -203,15 +205,15 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # XDG portal environment (needed for screen sharing on Wayland)
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway QT_QPA_PLATFORMTHEME=gtk3
 
 # Media keys
-bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
-bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86AudioRaiseVolume  exec swayosd-client --output-volume raise
+bindsym --locked XF86AudioLowerVolume  exec swayosd-client --output-volume lower
+bindsym --locked XF86AudioMute         exec swayosd-client --output-volume mute-toggle
+bindsym --locked XF86AudioMicMute      exec sh -c 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED && swayosd-client --custom-message "Mic Muted" --custom-icon microphone-sensitivity-muted || swayosd-client --custom-message "Mic Active" --custom-icon microphone-sensitivity-high'
+bindsym --locked XF86MonBrightnessUp   exec swayosd-client --brightness raise
+bindsym --locked XF86MonBrightnessDown exec swayosd-client --brightness lower
 
 # Screenshot
 bindsym $mod+Shift+s exec sh -c 'grim -g "$(slurp)" /tmp/screenshot.png && swappy -f /tmp/screenshot.png'
@@ -225,9 +227,14 @@ bindsym $mod+o exec thunar
 bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
 
 # Autostart
-exec copyq  # clipboard manager (tray)
+exec copyq            # clipboard manager (tray)
+exec_always sh -c 'pkill -x swaync; swaync'  # notification daemon
+exec swayosd-server   # OSD for volume/brightness
 exec nm-applet --indicator  # wifi (tray)
-exec blueman-applet  # bluetooth (tray)
+exec blueman-applet   # bluetooth (tray)
+
+# Toggle notification center
+bindsym $mod+n exec swaync-client -t
 
 # Waybar + burn-in prevention (randomizes Wallpaper, position, module order, border color)
 exec_always $HOME/.config/sway/scripts/burn-in.sh
