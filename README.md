@@ -81,7 +81,7 @@ Install Google Chrome and VS Code via their official `.rpm` repos.
 ### 2. Clone the repo
 
 ```bash
-git clone <repo-url> ~/Documents/self/dotfiles
+git clone https://github.com/whatiskeptiname/dotfiles.git ~/Documents/self/dotfiles
 ```
 
 ### 3. Create config directories
