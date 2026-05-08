@@ -23,8 +23,7 @@ bindsym $mod+Tab exec $rofi_cmd -show window
 
 # Theme — dark mode for GTK3, GTK4, and Qt apps
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-exec_always gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
+exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
 
 # Windows Border
 # ── Tune these ──────────────────────────
