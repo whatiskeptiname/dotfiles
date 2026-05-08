@@ -45,14 +45,14 @@ smart_borders off
 client.focused          #7aa2f7 #08080b #acb0d0 #7aa2f7 #7aa2f7
 client.focused_inactive #787c99 #08080b #787c99 #787c99 #2a2a3d
 client.unfocused        #08080b #08080b #787c99 #08080b #08080b
-client.urgent           #f7768e #08080b #f7768e #f7768e #f7768e
+client.urgent           #ff0000 #3b0000 #ffffff  #ff0000 #ff0000
+
+# Thick red box around urgent windows
+for_window [urgent=latest] border pixel 3
 
 ### Display Output configuration
 output eDP-1 scale 1.5
 output eDP-2 scale 1.5
-
-# Wallpaper
-output * bg /home/wikiN/Documents/self/dotfiles/wallpapers/purple.jpg fill
 
 # Idle configuration
  exec swayidle -w \
@@ -202,6 +202,9 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# XDG portal environment (needed for screen sharing on Wayland)
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
 # Media keys
 bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
 bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
@@ -211,7 +214,7 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 
 # Screenshot
-bindsym Print exec flameshot gui
+bindsym $mod+Shift+s exec sh -c 'grim -g "$(slurp)" /tmp/screenshot.png && swappy -f /tmp/screenshot.png'
 
 # App shortcuts
 bindsym $mod+c exec google-chrome
@@ -222,9 +225,10 @@ bindsym $mod+o exec thunar
 bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
 
 # Autostart
-exec copyq
-exec flameshot
+exec copyq  # clipboard manager (tray)
+exec nm-applet --indicator  # wifi (tray)
+exec blueman-applet  # bluetooth (tray)
 
-# Waybar Script
-exec_always $HOME/.config/sway/scripts/waybar.sh
+# Waybar + burn-in prevention (randomizes Wallpaper, position, module order, border color)
+exec_always $HOME/.config/sway/scripts/burn-in.sh
 
