@@ -1,0 +1,2 @@
+WLR_DRM_DEVICES=/dev/dri/card1:/dev/dri/card0
+SWAY_EXTRA_ARGS=--unsupported-gpu

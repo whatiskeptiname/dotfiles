@@ -96,10 +96,12 @@ mkdir -p ~/.config/waybar/colors
 
 ```bash
 ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/config
+ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
 ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh        ~/.config/sway/scripts/burn-in.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh      ~/.config/sway/scripts/powermenu.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh     ~/.config/sway/scripts/notify-osd.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/waybar.sh         ~/.config/sway/scripts/waybar.sh
+chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 ```
 
 ### 5. Symlink waybar configs
@@ -211,3 +213,25 @@ Default scale is `1.5` for HiDPI. Adjust in `sway/config`:
 ```
 output eDP-1 scale 1.5
 ```
+
+---
+
+## Multi-Monitor (NVIDIA + AMD hybrid GPU)
+
+Legion 5 and similar laptops have HDMI wired to the NVIDIA chip (card0) while
+sway defaults to the AMD iGPU (card1). Proprietary NVIDIA drivers also block
+sway with an error unless `--unsupported-gpu` is passed.
+
+The Fedora `start-sway` launcher (used by GDM) sources `~/.config/sway/environment`
+before starting sway. `sway/environment` sets the two required variables:
+
+```
+WLR_DRM_DEVICES=/dev/dri/card1:/dev/dri/card0
+SWAY_EXTRA_ARGS=--unsupported-gpu
+```
+
+Symlink it (already in step 4 above) and the normal **Sway** session in GDM will
+automatically pick up the external monitor — no custom session entry needed.
+
+> **Do not** set `WLR_DRM_DEVICES` in `~/.config/environment.d/` — it applies
+> to all user systemd services and will cause a login loop if sway fails to start.
