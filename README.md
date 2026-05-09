@@ -235,3 +235,17 @@ automatically pick up the external monitor — no custom session entry needed.
 
 > **Do not** set `WLR_DRM_DEVICES` in `~/.config/environment.d/` — it applies
 > to all user systemd services and will cause a login loop if sway fails to start.
+
+### Output config (DHI LM22-B201SW — 1080p external)
+
+| Output | Resolution | Refresh | Position | Scale |
+|--------|-----------|---------|----------|-------|
+| `eDP-1` (laptop) | 2560×1600 | 165 Hz | 0,0 | 1.5 |
+| `HDMI-A-1` (external) | 1920×1080 | 100 Hz | 1707,0 | 1 |
+
+Adaptive sync (FreeSync) is not supported on the external panel.
+
+### Workspace layout
+
+Workspaces 1–5 are pinned to the laptop screen, 6–10 to the external monitor.
+Adjust the `workspace N output` lines in `sway/config` to change the split.
