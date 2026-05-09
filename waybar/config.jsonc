@@ -71,8 +71,8 @@
         "device": "amdgpu_bl2",
         "format": "{icon} {percent}%",
         "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "on-scroll-up": "brightnessctl set +5%",
-        "on-scroll-down": "brightnessctl set 5%-"
+        "on-scroll-up": "swayosd-client --brightness raise",
+        "on-scroll-down": "swayosd-client --brightness lower"
     },
 
     "pulseaudio": {
@@ -83,8 +83,8 @@
             "default": ["󰕿", "󰖀", "󰕾"]
         },
         "on-click": "pavucontrol",
-        "on-scroll-up": "~/.config/waybar/scripts/mic-vol.sh sink up",
-        "on-scroll-down": "~/.config/waybar/scripts/mic-vol.sh sink down"
+        "on-scroll-up": "swayosd-client --output-volume raise",
+        "on-scroll-down": "swayosd-client --output-volume lower"
     },
 
     "pulseaudio#source": {
@@ -92,8 +92,8 @@
         "format-source": "󰍬",
         "format-source-muted": "󰍭",
         "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-        "on-scroll-up": "~/.config/waybar/scripts/mic-vol.sh source up",
-        "on-scroll-down": "~/.config/waybar/scripts/mic-vol.sh source down",
+        "on-scroll-up": "swayosd-client --input-volume raise",
+        "on-scroll-down": "swayosd-client --input-volume lower",
         "tooltip-format": "Mic: {source_volume}%"
     },
 
