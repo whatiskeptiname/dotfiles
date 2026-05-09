@@ -12,7 +12,7 @@ chosen=$(printf "%s\n%s\n%s\n%s\n%s\n%s" \
     | rofi -dmenu -p "Power" -i)
 
 case "$chosen" in
-    "$lock")     swaylock -f -c 000000 ;;
+    "$lock")     "$HOME/.config/sway/scripts/lock.sh" ;;
     "$shutdown") systemctl poweroff ;;
     "$suspend")  systemctl suspend ;;
     "$hibernate") systemctl hibernate ;;

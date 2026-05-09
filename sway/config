@@ -70,9 +70,9 @@ workspace 10 output HDMI-A-1
 
 # Idle configuration
  exec swayidle -w \
-          timeout 300 'swaylock -f -c 000000' \
-          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-          before-sleep 'swaylock -f -c 000000'
+          timeout 180 '$HOME/.config/sway/scripts/lock.sh' \
+          timeout 60 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+          before-sleep '$HOME/.config/sway/scripts/lock.sh'
 
 # Input configuration
 input type:touchpad {

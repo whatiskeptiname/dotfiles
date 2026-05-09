@@ -98,6 +98,7 @@ mkdir -p ~/.config/waybar/colors
 ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/config
 ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
 ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh        ~/.config/sway/scripts/burn-in.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh           ~/.config/sway/scripts/lock.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh      ~/.config/sway/scripts/powermenu.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh     ~/.config/sway/scripts/notify-osd.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/waybar.sh         ~/.config/sway/scripts/waybar.sh
@@ -194,9 +195,16 @@ Runs on every sway start/reload and randomizes:
 - **swaync** — full notification daemon + panel (`Mod+n`)
 
 ### Idle & Lock
-- Screen locks after **5 minutes** of inactivity (`swaylock` — black screen)
-- Display powers off after **10 minutes**
-- Locks before sleep
+- Display powers off after **1 minute** of inactivity, back on when activity resumes
+- Screen locks after **3 minutes** of inactivity
+- Locks before sleep and via power menu (`Mod+Shift+Delete → Lock`)
+
+Lock screen (`sway/scripts/lock.sh`):
+- Shows the current random wallpaper as background (falls back to solid black)
+- Ring color randomized each lock from the 12-color burn-in palette
+- Ring position randomized each lock (both axes)
+- Ring always visible (`--indicator-idle-visible`) — clearly indicates locked state
+- Tokyo Night colors for verify / wrong-password states
 
 ### Dark Mode
 - GTK4, GTK3, and Qt apps all use dark theme via gsettings + `QT_QPA_PLATFORMTHEME=gtk3`

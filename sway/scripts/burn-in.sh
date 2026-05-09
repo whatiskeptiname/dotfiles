@@ -12,6 +12,7 @@ STATE_FILE="$HOME/.cache/burn-in-palette-state"
 WALLPAPER_DIR="$HOME/Documents/self/dotfiles/wallpapers"
 WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.png" \) | shuf -n 1)
 swaymsg "output * bg $WALLPAPER fill"
+echo "$WALLPAPER" > "$HOME/.cache/current-wallpaper"
 
 # ── 12 non-red colors — red is reserved for urgent windows ───────────────
 COLOR_POOL=(
