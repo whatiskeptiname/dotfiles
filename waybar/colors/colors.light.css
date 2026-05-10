@@ -1,6 +1,7 @@
 /* Tokyo night light color theme */
 
 @define-color module-bg     rgba(214, 216, 223, 0.9);
+@define-color vitals-bg     rgba(214, 216, 223, 0.6);
 @define-color tooltip-bg    @module-bg;
 @define-color inactive      #707280;
 @define-color fg            #343B58;

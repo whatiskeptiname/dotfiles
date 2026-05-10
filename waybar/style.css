@@ -37,16 +37,16 @@
     border-bottom: 2px solid transparent;
 }
 
-#cpu            { border-bottom-color: @green; }
-#custom-gpu     { border-bottom-color: @green; }
-#temperature    { border-bottom-color: @yellow; }
-#memory         { border-bottom-color: @blue; }
-#disk           { border-bottom-color: @blue; }
-#battery        { border-bottom-color: @fg; }
-#backlight      { border-bottom-color: @yellow; }
-#pulseaudio     { border-bottom-color: @red; }
-#network        { border-bottom-color: @blue; }
-#tray           { border-bottom-color: transparent; }
+#cpu            { border-bottom-color: @green;  background: @vitals-bg; }
+#custom-gpu     { border-bottom-color: @green;  background: @vitals-bg; }
+#temperature    { border-bottom-color: @yellow; background: @vitals-bg; }
+#memory         { border-bottom-color: @blue;   background: @vitals-bg; }
+#disk           { border-bottom-color: @blue;   background: @vitals-bg; }
+#battery        { border-bottom-color: @fg;     background: @vitals-bg; }
+#backlight      { border-bottom-color: @yellow; background: @vitals-bg; }
+#pulseaudio     { border-bottom-color: @red; background: @vitals-bg; }
+#network        { border-bottom-color: @blue; background: @vitals-bg; }
+#tray           { border-bottom-color: transparent; background: @vitals-bg; }
 
 #clock {
     background: @module-bg;
