@@ -244,7 +244,7 @@ automatically pick up the external monitor — no custom session entry needed.
 > **Do not** set `WLR_DRM_DEVICES` in `~/.config/environment.d/` — it applies
 > to all user systemd services and will cause a login loop if sway fails to start.
 
-### Output config (DHI LM22-B201SW — 1080p external)
+### Output config (1080p external)
 
 | Output | Resolution | Refresh | Position | Scale |
 |--------|-----------|---------|----------|-------|
