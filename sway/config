@@ -51,12 +51,12 @@ client.urgent           #ff0000 #3b0000 #ffffff  #ff0000 #ff0000
 # Thick red box around urgent windows
 for_window [urgent=latest] border pixel 3
 
-### Display Output configuration
+# Display Output configuration
 output eDP-1    pos 0    0 scale 1.5 mode 2560x1600@165Hz
-output eDP-2    pos 0    0 scale 1.5
+output eDP-2    pos 0    0 scale 1.5 mode 2560x1600@165Hz
 output HDMI-A-1 pos 1707 0 scale 1   mode 1920x1080@100Hz
 
-### Workspace assignment (1-5 → laptop, 6-10 → external)
+# Workspace assignment (1-5 → laptop, 6-10 → external)
 workspace 1  output eDP-1
 workspace 2  output eDP-1
 workspace 3  output eDP-1
@@ -69,7 +69,7 @@ workspace 9  output HDMI-A-1
 workspace 10 output HDMI-A-1
 
 # Idle configuration
- exec swayidle -w \
+exec swayidle -w \
           timeout 180 '$HOME/.config/sway/scripts/lock.sh' \
           timeout 60 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
           before-sleep '$HOME/.config/sway/scripts/lock.sh'

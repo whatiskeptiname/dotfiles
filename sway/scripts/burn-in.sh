@@ -47,6 +47,10 @@ ROTATED=("${COLOR_POOL[@]:$IDX}" "${COLOR_POOL[@]:0:$IDX}")
 ACCENT=${ROTATED[0]}
 MODULE_COLORS=($(printf '%s\n' "${ROTATED[@]:1}" | shuf | head -9))
 
+# ── Clock separator (shifts pixels each boot) ────────────────────────────
+SEP_POOL=(":" "-" "_" " " "∶")
+CLOCK_SEP=${SEP_POOL[$RANDOM % ${#SEP_POOL[@]}]}
+
 # ── 1. Random position + side ────────────────────────────────────────────
 POSITIONS=("top" "bottom")
 POSITION=${POSITIONS[$RANDOM % 2]}
@@ -68,6 +72,7 @@ sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
   -e "s|\"modules-left\": \[\"sway/workspaces\"\]|\"modules-left\": [$MODULES_LEFT]|" \
   -e "s|\"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\", \"backlight\", \"pulseaudio\", \"pulseaudio#source\", \"tray\"|$MODULES_RIGHT|" \
+  -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"
 
 # ── 4. Build runtime CSS — unique color per module underline ─────────────
@@ -80,6 +85,7 @@ MODULES_WITH_UNDERLINE=(cpu custom-gpu temperature memory disk battery backlight
   for i in "${!MODULES_WITH_UNDERLINE[@]}"; do
     echo "#${MODULES_WITH_UNDERLINE[$i]} { border-bottom-color: ${MODULE_COLORS[$i]}; }"
   done
+  echo "#clock { color: $ACCENT; }"
 } > "$WAYBAR_CSS_RUNTIME"
 
 # ── 5. Apply accent color to sway window borders ─────────────────────────
