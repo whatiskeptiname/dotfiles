@@ -19,7 +19,7 @@ set $rofi_cmd rofi \
 set $menu $rofi_cmd -show combi -combi-modes drun #run -modes combi
 
 # Window switcher
-bindsym $mod+Tab exec $rofi_cmd -show window
+bindsym $mod+Tab exec ~/.config/sway/scripts/window-switcher.sh
 
 # Theme — dark mode for GTK3, GTK4, and Qt apps
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'

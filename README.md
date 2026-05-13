@@ -97,11 +97,12 @@ mkdir -p ~/.config/waybar/colors
 ```bash
 ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/config
 ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
-ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh        ~/.config/sway/scripts/burn-in.sh
-ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh           ~/.config/sway/scripts/lock.sh
-ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh      ~/.config/sway/scripts/powermenu.sh
-ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh     ~/.config/sway/scripts/notify-osd.sh
-ln -s ~/Documents/self/dotfiles/sway/scripts/waybar.sh         ~/.config/sway/scripts/waybar.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh          ~/.config/sway/scripts/burn-in.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh             ~/.config/sway/scripts/lock.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh        ~/.config/sway/scripts/powermenu.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh       ~/.config/sway/scripts/notify-osd.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/waybar.sh           ~/.config/sway/scripts/waybar.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/window-switcher.sh  ~/.config/sway/scripts/window-switcher.sh
 chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 ```
 
