@@ -69,9 +69,10 @@ workspace 9  output HDMI-A-1
 workspace 10 output HDMI-A-1
 
 # Idle configuration
-exec swayidle -w \
-          timeout 180 '$HOME/.config/sway/scripts/lock.sh' \
-          timeout 60 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+exec_always pkill -x swayidle; swayidle -w \
+          timeout 180   'brightnessctl -s set 1%'        resume 'brightnessctl -r' \
+          timeout 600  '$HOME/.config/sway/scripts/lock.sh' \
+          timeout 602  'swaymsg "output * power off"'   resume 'swaymsg "output * power on"' \
           before-sleep '$HOME/.config/sway/scripts/lock.sh'
 
 # Input configuration
