@@ -1,4 +1,5 @@
 #!/bin/bash
+pgrep -x swaylock > /dev/null && exit 0   # no-op if timeout and before-sleep both fire
 WALLPAPER=$(cat "$HOME/.cache/current-wallpaper" 2>/dev/null)
 
 # Same palette as burn-in — red reserved for wrong-password state
