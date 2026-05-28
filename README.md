@@ -40,6 +40,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes legacy i3 + polybar config.
 | `grim` | Wayland screen capture |
 | `slurp` | Region selection |
 | `swappy` | Screenshot annotation & save |
+| `gthumb` | Simple photo viewer & editor (crop, resize, color adjust) |
 
 ### Tray
 | App | Purpose |
