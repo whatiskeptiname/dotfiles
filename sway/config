@@ -234,7 +234,7 @@ bindsym $mod+Shift+s exec sh -c 'grim -g "$(slurp)" /tmp/screenshot.png && swapp
 # App shortcuts
 bindsym $mod+c exec google-chrome
 bindsym $mod+p exec code
-bindsym $mod+o exec thunar
+bindsym $mod+o exec sh -c 'pkill -x thunar; sleep 0.1; thunar'
 
 # Power menu
 bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
