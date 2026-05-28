@@ -216,6 +216,90 @@ Lock screen (`sway/scripts/lock.sh`):
 
 ---
 
+## Screen Sharing (Wayland / PipeWire)
+
+Screen sharing in Chrome/Chromium on Sway requires `xdg-desktop-portal-wlr` properly wired into the systemd user session. **Sway 1.12+ supports native per-window capture** — no workarounds needed.
+
+### What's configured
+
+| File | Purpose |
+| ---- | ------- |
+| `~/.config/xdg-desktop-portal/portals.conf` | Routes screen-cast and screenshot requests to the wlr backend |
+| `~/.config/xdg-desktop-portal-wlr/config` | Sets max framerate for screencasts |
+| `~/.config/chromium-flags.conf` | Enables PipeWire capture + native Wayland mode in Chromium |
+
+The sway config (`sway/config`) also starts `sway-session.target` and imports the Wayland env vars into the systemd user session so the portal services can start.
+
+### Setup
+
+#### 1. Install packages
+
+```bash
+sudo dnf install wlroots xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk pipewire pipewire-utils
+```
+
+Install Sway 1.12 (not yet in Fedora 44 stable — grab the fc45 RPM directly):
+
+```bash
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/s/sway-1.12-1.fc45.x86_64.rpm
+```
+
+#### 2. Create portal backend config
+
+```bash
+mkdir -p ~/.config/xdg-desktop-portal
+cat > ~/.config/xdg-desktop-portal/portals.conf << 'EOF'
+[preferred]
+default=wlr;gtk
+org.freedesktop.impl.portal.ScreenCast=wlr
+org.freedesktop.impl.portal.Screenshot=wlr
+EOF
+```
+
+#### 3. Configure xdg-desktop-portal-wlr
+
+```bash
+mkdir -p ~/.config/xdg-desktop-portal-wlr
+cat > ~/.config/xdg-desktop-portal-wlr/config << 'EOF'
+[screencast]
+max_framerate=60
+EOF
+```
+
+#### 4. Configure Chromium
+
+```bash
+cat > ~/.config/chromium-flags.conf << 'EOF'
+--enable-features=WebRTCPipeWireCapturer
+--ozone-platform=wayland
+EOF
+```
+
+#### 5. Wire sway into the systemd user session
+
+Add these lines to `sway/config` (already present in this repo):
+
+```sh
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK
+exec systemctl --user start sway-session.target
+```
+
+This activates `graphical-session.target`, which the portal service requires.
+
+#### 6. Reload
+
+```bash
+systemctl --user start xdg-desktop-portal-wlr.service xdg-desktop-portal.service
+```
+
+Then restart Chromium.
+
+### Sharing a specific window
+
+With Sway 1.12, the screen-share dialog in Chrome/Meet/Zoom/Discord shows individual windows natively — just click the window you want to share. No fullscreen workaround needed.
+
+---
+
 ## Display Scaling
 
 Default scale is `1.5` for HiDPI. Adjust in `sway/config`:

@@ -219,6 +219,8 @@ bindsym $mod+r mode "resize"
 
 # XDG portal environment (needed for screen sharing on Wayland)
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway QT_QPA_PLATFORMTHEME=gtk3
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK
+exec systemctl --user start sway-session.target
 
 # Media keys
 bindsym --locked XF86AudioRaiseVolume  exec swayosd-client --output-volume raise
