@@ -165,6 +165,7 @@ Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 | `Mod+p` | VS Code |
 | `Mod+o` | File manager (Thunar) |
 | `Mod+n` | Toggle notification center (swaync) |
+| `Mod+Shift+n` | Toggle focus mode (mute all notifications / DND) |
 | `Mod+Shift+s` | Screenshot — select region → annotate (grim+slurp+swappy) |
 | `Mod+Shift+Delete` | Power menu (rofi) |
 | `Mod+Shift+c` | Reload sway config |

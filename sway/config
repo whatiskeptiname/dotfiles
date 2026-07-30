@@ -252,6 +252,9 @@ exec blueman-applet   # bluetooth (tray)
 # Toggle notification center
 bindsym $mod+n exec swaync-client -t
 
+# Toggle focus mode (mute all notifications)
+bindsym $mod+Shift+n exec ~/.config/sway/scripts/notify-osd.sh dnd-toggle
+
 # Waybar + burn-in prevention (randomizes Wallpaper, position, module order, border color)
 exec_always $HOME/.config/sway/scripts/burn-in.sh
 

@@ -1,7 +1,14 @@
 #!/bin/bash
-# Usage: notify-osd.sh volume-up|volume-down|mute|mic-mute|brightness-up|brightness-down
+# Usage: notify-osd.sh volume-up|volume-down|mute|mic-mute|brightness-up|brightness-down|dnd-toggle
 
 case "$1" in
+    dnd-toggle)
+        if [ "$(swaync-client -d)" = "true" ]; then
+            notify-send -u critical -h string:synchronous:dnd "󰂛 Focus Mode" "Notifications muted"
+        else
+            notify-send -u critical -h string:synchronous:dnd "󰂚 Focus Mode" "Notifications unmuted"
+        fi
+        ;;
     volume-up)
         wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
         VOL=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf "%d", $2*100}')
