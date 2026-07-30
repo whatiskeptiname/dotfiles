@@ -59,7 +59,7 @@ FLIPPED=$((RANDOM % 2))
 # ── 2. Shuffle vitals modules (tray always last) ──────────────────────────
 RIGHT=(cpu temperature memory "custom/gpu" disk battery backlight pulseaudio "pulseaudio#source")
 SHUFFLED=($(printf '%s\n' "${RIGHT[@]}" | shuf))
-VITALS_JSON=$(printf '"%s", ' "${SHUFFLED[@]}")"\"tray\""
+VITALS_JSON=$(printf '"%s", ' "${SHUFFLED[@]}")"\"custom/notification\", \"tray\""
 
 if [[ $FLIPPED -eq 0 ]]; then
     MODULES_LEFT='"sway/workspaces"'; MODULES_RIGHT="$VITALS_JSON"
@@ -71,7 +71,7 @@ fi
 sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
   -e "s|\"modules-left\": \[\"sway/workspaces\"\]|\"modules-left\": [$MODULES_LEFT]|" \
-  -e "s|\"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\", \"backlight\", \"pulseaudio\", \"pulseaudio#source\", \"tray\"|$MODULES_RIGHT|" \
+  -e "s|\"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\", \"backlight\", \"pulseaudio\", \"pulseaudio#source\", \"custom/notification\", \"tray\"|$MODULES_RIGHT|" \
   -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"
 

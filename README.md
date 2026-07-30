@@ -196,6 +196,7 @@ Runs on every sway start/reload and randomizes:
 ### Notifications
 - **swayosd** — pill-style OSD overlay for volume/brightness/mic
 - **swaync** — full notification daemon + panel (`Mod+n`)
+- **Focus mode / DND** — `Mod+Shift+n` or right-click the waybar bell icon toggles Do Not Disturb; the icon switches to a crossed-out bell while muted
 
 ### Idle & Lock
 - Display powers off after **1 minute** of inactivity, back on when activity resumes

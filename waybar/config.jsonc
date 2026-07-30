@@ -7,7 +7,7 @@
 
     "modules-left": ["sway/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["cpu", "temperature", "memory", "custom/gpu", "disk", "battery", "backlight", "pulseaudio", "pulseaudio#source", "tray"],
+    "modules-right": ["cpu", "temperature", "memory", "custom/gpu", "disk", "battery", "backlight", "pulseaudio", "pulseaudio#source", "custom/notification", "tray"],
 
     "sway/workspaces": {
         "disable-scroll": true,
@@ -95,6 +95,28 @@
         "on-scroll-up": "swayosd-client --input-volume raise",
         "on-scroll-down": "swayosd-client --input-volume lower",
         "tooltip-format": "Mic: {source_volume}%"
+    },
+
+    "custom/notification": {
+        "tooltip": true,
+        "tooltip-format": "Left click: notification panel\nRight click: toggle focus mode (DND)",
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "~/.config/sway/scripts/notify-osd.sh dnd-toggle",
+        "escape": true
     },
 
     "network": {

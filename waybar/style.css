@@ -31,7 +31,8 @@
 #network,
 #clock,
 #tray,
-#custom-gpu {
+#custom-gpu,
+#custom-notification {
     padding: 1px 8px;
     margin: 0 2px;
     border-bottom: 2px solid transparent;
@@ -47,6 +48,14 @@
 #pulseaudio     { border-bottom-color: @red; background: @vitals-bg; }
 #network        { border-bottom-color: @blue; background: @vitals-bg; }
 #tray           { border-bottom-color: transparent; background: @vitals-bg; }
+#custom-notification { border-bottom-color: @yellow; background: @vitals-bg; }
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-notification,
+#custom-notification.dnd-inhibited-none {
+    color: @red;
+}
 
 #clock {
     background: @module-bg;

@@ -3,10 +3,13 @@
 
 case "$1" in
     dnd-toggle)
-        if [ "$(swaync-client -d)" = "true" ]; then
-            notify-send -u critical -h string:synchronous:dnd "󰂛 Focus Mode" "Notifications muted"
+        if [ "$(swaync-client -D)" = "false" ]; then
+            notify-send -h string:synchronous:dnd "󰂛 Focus Mode" "Notifications muted"
+            sleep 1
+            swaync-client -dn >/dev/null
         else
-            notify-send -u critical -h string:synchronous:dnd "󰂚 Focus Mode" "Notifications unmuted"
+            swaync-client -df >/dev/null
+            notify-send -h string:synchronous:dnd "󰂚 Focus Mode" "Notifications unmuted"
         fi
         ;;
     volume-up)
