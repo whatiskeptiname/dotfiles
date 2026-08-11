@@ -18,6 +18,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes legacy i3 + polybar config.
 | `swayidle` | Idle management (auto-lock + display off) |
 | `rofi` | App launcher, window switcher, power menu |
 | `kitty` | Terminal emulator |
+| `starship` | Clean, minimal cross-shell prompt |
 
 ### Apps
 | App | Purpose |
@@ -82,6 +83,17 @@ sudo dnf install swaynotificationcenter
 Install cava (audio spectrum visualizer, feeds the waybar mpris cell):
 ```bash
 sudo dnf install cava
+```
+
+Install starship (clean, minimal shell prompt):
+```bash
+sudo dnf copr enable atim/starship
+sudo dnf install starship
+```
+
+Enable it by adding this line to the end of `~/.bashrc`:
+```bash
+eval "$(starship init bash)"
 ```
 
 Install Google Chrome and VS Code via their official `.rpm` repos.
