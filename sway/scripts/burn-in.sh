@@ -42,10 +42,10 @@ AVAILABLE=($(comm -23 <(printf '%s\n' "${ALL_INDICES[@]}" | sort) \
 IDX=${AVAILABLE[$RANDOM % ${#AVAILABLE[@]}]}
 echo "$IDX" >> "$STATE_FILE"
 
-# Rotate pool from IDX, shuffle the rest — gives 9 unique colors per boot
+# Rotate pool from IDX, shuffle the rest — gives 11 unique colors per boot
 ROTATED=("${COLOR_POOL[@]:$IDX}" "${COLOR_POOL[@]:0:$IDX}")
 ACCENT=${ROTATED[0]}
-MODULE_COLORS=($(printf '%s\n' "${ROTATED[@]:1}" | shuf | head -9))
+MODULE_COLORS=($(printf '%s\n' "${ROTATED[@]:1}" | shuf | head -11))
 
 # ── Clock separator (shifts pixels each boot) ────────────────────────────
 SEP_POOL=(":" "-" "_" " " "∶")
@@ -80,14 +80,20 @@ sed \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"
 
 # ── 4. Build runtime CSS — unique color per module underline ─────────────
-MODULES_WITH_UNDERLINE=(cpu custom-gpu temperature memory disk battery backlight pulseaudio network)
+# The mpris cluster is one entry sharing a single color across all four
+# selectors, rather than one slot per module, since it should read as one cell.
+MODULES_WITH_UNDERLINE=(
+  "#cpu" "#custom-gpu" "#temperature" "#memory" "#disk" "#battery"
+  "#backlight" "#pulseaudio" "#network" "#custom-notification"
+  "#custom-mpris-prev, #custom-mpris-now, #custom-mpris-next, #custom-cava"
+)
 {
   # Keep base color variables (values don't matter much — overridden below)
   cat "$COLORS_FILE"
   grep -v '@import' "$WAYBAR_CSS_TEMPLATE"
-  # Each module gets its own unique color from the shuffled pool
+  # Each entry gets its own unique color from the shuffled pool
   for i in "${!MODULES_WITH_UNDERLINE[@]}"; do
-    echo "#${MODULES_WITH_UNDERLINE[$i]} { border-bottom-color: ${MODULE_COLORS[$i]}; }"
+    echo "${MODULES_WITH_UNDERLINE[$i]} { border-bottom-color: ${MODULE_COLORS[$i]}; }"
   done
   echo "#clock { color: $ACCENT; }"
 } > "$WAYBAR_CSS_RUNTIME"

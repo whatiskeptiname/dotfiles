@@ -54,12 +54,16 @@
 #custom-mpris-now,
 #custom-mpris-next,
 #custom-cava {
-    border-bottom-color: @red;
     background: @vitals-bg;
     font-size: 12px;
     padding: 1px 4px;
     margin: 0;
 }
+
+#custom-mpris-prev,
+#custom-mpris-now,
+#custom-mpris-next,
+#custom-cava { border-bottom-color: @red; }
 
 /* Reimagined as one rounded pill — breaks from the bar's flat theme
    deliberately, since this is the one "expressive" cell on the bar */

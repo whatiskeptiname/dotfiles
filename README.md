@@ -33,6 +33,8 @@ Sway + Waybar setup on Fedora (Wayland). Includes legacy i3 + polybar config.
 | `brightnessctl` | Brightness control |
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
+| `playerctl` | MPRIS media control — drives the waybar music cell |
+| `cava` | Audio spectrum analyzer — feeds the waybar music cell's visualizer |
 
 ### Screenshot
 | App | Purpose |
@@ -62,7 +64,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes legacy i3 + polybar config.
 ```bash
 sudo dnf install sway waybar swaylock swayidle rofi kitty thunar \
   wireplumber brightnessctl grim slurp swappy \
-  copyq network-manager-applet blueman \
+  copyq network-manager-applet blueman playerctl \
   xdg-desktop-portal-wlr xdg-desktop-portal-gtk
 ```
 
@@ -197,6 +199,14 @@ Runs on every sway start/reload and randomizes:
 - **Module order** — shuffles vitals modules each boot
 - **Accent colors** — 12-color pool, all unique per module underline, cycles before repeating
 - **Window border color** — matches the accent color
+
+### Music Cell (waybar, center, beside the clock)
+Visible whenever a player is **Playing** or **Paused** — only disappears when fully stopped:
+- **Prev / next** — dedicated buttons, `playerctl previous`/`next`
+- **Now playing** — scrolling marquee (artist - title), icon swaps play/pause with real status
+- **Click the track name** — toggles play/pause (`playerctl play-pause`)
+- **Cava spectrum visualizer** — 8-bar rainbow histogram driven by real audio (`waybar/scripts/cava-viz.sh`, config in `cava/`)
+- Side of the clock flips with the vitals cluster in `burn-in.sh`, so it always sits away from vitals
 
 ### Notifications
 - **swayosd** — pill-style OSD overlay for volume/brightness/mic
