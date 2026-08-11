@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+state_file="${XDG_RUNTIME_DIR:-/tmp}/waybar-gpu-index"
+
 # Detect which DRM card sway is using
 active_card_path=""
 active_vendor=""
@@ -69,29 +71,24 @@ tooltip_section() {
         "$name" "$label" "$usage" "$um" "$tm" "$temp"
 }
 
-# --- gather active GPU stats ---
+# --- enumerate all GPUs (active first, then dedicated/other) ---
+
+gpus=()
+labels=()
 
 active=""
 case "$active_vendor" in
     amd)    active=$(amd_stats "$active_card_path") ;;
     nvidia) active=$(nvidia_stats) ;;
 esac
-
-if [ -z "$active" ]; then
-    echo '{"text": "N/A", "tooltip": "No GPU detected"}'; exit 0
+if [ -n "$active" ]; then
+    gpus+=("$active"); labels+=("active")
 fi
-
-IFS='|' read -r _ usage um _ temp <<< "$active"
-bar_text="${usage}% ${um}M ${temp}°C "
-
-tooltip=$(tooltip_section "$active" "active")
-
-# --- find dedicated GPU (different from active) ---
 
 # NVIDIA discrete (when active is AMD/Intel)
 if [ "$active_vendor" != "nvidia" ] && command -v nvidia-smi &>/dev/null; then
     nv=$(nvidia_stats)
-    [ -n "$nv" ] && tooltip="${tooltip}\n\n$(tooltip_section "$nv" "dedicated")"
+    [ -n "$nv" ] && { gpus+=("$nv"); labels+=("dedicated"); }
 fi
 
 # Other AMD cards (dedicated or second integrated)
@@ -100,7 +97,38 @@ for f in /sys/class/drm/card*/device/gpu_busy_percent; do
     card_path=$(dirname "$f")
     [ "$card_path" = "$active_card_path" ] && continue
     stats=$(amd_stats "$card_path")
-    [ -n "$stats" ] && tooltip="${tooltip}\n\n$(tooltip_section "$stats" "dedicated")"
+    [ -n "$stats" ] && { gpus+=("$stats"); labels+=("dedicated"); }
+done
+
+count=${#gpus[@]}
+
+if [ "$count" -eq 0 ]; then
+    [ "$1" = "next" ] && exit 0
+    echo '{"text": "N/A", "tooltip": "No GPU detected"}'; exit 0
+fi
+
+idx=$(cat "$state_file" 2>/dev/null)
+[[ "$idx" =~ ^[0-9]+$ ]] || idx=0
+
+# --- on-click: advance to next GPU and ask waybar to redraw ---
+if [ "$1" = "next" ]; then
+    idx=$(( (idx + 1) % count ))
+    echo "$idx" > "$state_file"
+    pkill -RTMIN+8 -x waybar
+    exit 0
+fi
+
+idx=$(( idx % count ))
+
+IFS='|' read -r _ usage um _ temp <<< "${gpus[$idx]}"
+bar_text="${usage}% ${um}M ${temp}°C "
+
+tooltip=""
+for i in "${!gpus[@]}"; do
+    label="${labels[$i]}"
+    [ "$i" -eq "$idx" ] && label="${label}, shown"
+    section=$(tooltip_section "${gpus[$i]}" "$label")
+    tooltip="${tooltip:+${tooltip}\n\n}${section}"
 done
 
 # Escape newlines for JSON

@@ -30,6 +30,8 @@
 
     "custom/gpu": {
         "exec": "~/.config/waybar/scripts/gpu.sh",
+        "on-click": "~/.config/waybar/scripts/gpu.sh next",
+        "signal": 8,
         "return-type": "json",
         "format": "󰾲 {}",
         "interval": 2,
