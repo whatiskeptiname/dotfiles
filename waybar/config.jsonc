@@ -6,12 +6,48 @@
     "spacing": 4,
 
     "modules-left": ["sway/workspaces"],
-    "modules-center": ["clock"],
+    "modules-center": ["custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "clock"],
     "modules-right": ["cpu", "temperature", "memory", "custom/gpu", "disk", "battery", "backlight", "pulseaudio", "pulseaudio#source", "custom/notification", "tray"],
 
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true
+    },
+
+    "custom/mpris-prev": {
+        "exec": "st=$(playerctl status 2>/dev/null); { [ \"$st\" = Playing ] || [ \"$st\" = Paused ]; } && printf '%s' '󰒮'",
+        "format": "{}",
+        "hide-empty-text": true,
+        "interval": 1,
+        "on-click": "playerctl previous",
+        "tooltip": false
+    },
+
+    "custom/mpris-now": {
+        "exec": "~/.config/waybar/scripts/mpris-now.sh",
+        "format": "{}",
+        "hide-empty-text": true,
+        "restart-interval": 5,
+        "on-click": "playerctl play-pause",
+        "exec-on-event": false,
+        "tooltip": false
+    },
+
+    "custom/mpris-next": {
+        "exec": "st=$(playerctl status 2>/dev/null); { [ \"$st\" = Playing ] || [ \"$st\" = Paused ]; } && printf '%s' '󰒭'",
+        "format": "{}",
+        "hide-empty-text": true,
+        "interval": 1,
+        "on-click": "playerctl next",
+        "tooltip": false
+    },
+
+    "custom/cava": {
+        "exec": "~/.config/waybar/scripts/cava-viz.sh",
+        "format": "{}",
+        "hide-empty-text": true,
+        "restart-interval": 5,
+        "tooltip": false
     },
 
     "clock": {

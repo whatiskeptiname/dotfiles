@@ -61,10 +61,13 @@ RIGHT=(cpu temperature memory "custom/gpu" disk battery backlight pulseaudio "pu
 SHUFFLED=($(printf '%s\n' "${RIGHT[@]}" | shuf))
 VITALS_JSON=$(printf '"%s", ' "${SHUFFLED[@]}")"\"custom/notification\", \"tray\""
 
+MEDIA='"custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava"'
 if [[ $FLIPPED -eq 0 ]]; then
     MODULES_LEFT='"sway/workspaces"'; MODULES_RIGHT="$VITALS_JSON"
+    MODULES_CENTER="$MEDIA, \"clock\""
 else
     MODULES_LEFT="$VITALS_JSON";     MODULES_RIGHT='"sway/workspaces"'
+    MODULES_CENTER="\"clock\", $MEDIA"
 fi
 
 # ── 3. Build runtime waybar config ───────────────────────────────────────
@@ -72,6 +75,7 @@ sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
   -e "s|\"modules-left\": \[\"sway/workspaces\"\]|\"modules-left\": [$MODULES_LEFT]|" \
   -e "s|\"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\", \"backlight\", \"pulseaudio\", \"pulseaudio#source\", \"custom/notification\", \"tray\"|$MODULES_RIGHT|" \
+  -e "s|\"modules-center\": \[\"custom/mpris-prev\", \"custom/mpris-now\", \"custom/mpris-next\", \"custom/cava\", \"clock\"\]|\"modules-center\": [$MODULES_CENTER]|" \
   -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"
 
@@ -92,5 +96,10 @@ MODULES_WITH_UNDERLINE=(cpu custom-gpu temperature memory disk battery backlight
 swaymsg "client.focused $ACCENT #08080b #acb0d0 $ACCENT $ACCENT"
 
 # ── 6. Restart waybar ────────────────────────────────────────────────────
+# custom/cava is a continuous self-looping module (cava-viz.sh piping cava);
+# killing waybar alone orphans that whole child tree, so it has to be swept
+# separately or it leaks one more pair of processes on every reload.
+pkill -f cava-viz.sh
+pkill -x cava
 pkill -x waybar
 waybar -c "$WAYBAR_RUNTIME" -s "$WAYBAR_CSS_RUNTIME" &

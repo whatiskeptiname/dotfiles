@@ -1,0 +1,16 @@
+# cava config tuned for raw output into the waybar mpris visualizer
+# (waybar/scripts/cava-viz.sh). Not meant to be run interactively.
+
+[general]
+bars = 8
+framerate = 30
+
+[input]
+method = pulse
+source = auto
+
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 7

@@ -77,6 +77,11 @@ Install swaync (notification center):
 sudo dnf install swaynotificationcenter
 ```
 
+Install cava (audio spectrum visualizer, feeds the waybar mpris cell):
+```bash
+sudo dnf install cava
+```
+
 Install Google Chrome and VS Code via their official `.rpm` repos.
 
 ### 2. Clone the repo

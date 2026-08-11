@@ -21,7 +21,10 @@
 #bluetooth,
 #battery,
 #memory,
-#mpris,
+#custom-mpris-prev,
+#custom-mpris-now,
+#custom-mpris-next,
+#custom-cava,
 #window,
 #cpu,
 #load,
@@ -46,6 +49,33 @@
 #battery        { border-bottom-color: @fg;     background: @vitals-bg; }
 #backlight      { border-bottom-color: @yellow; background: @vitals-bg; }
 #pulseaudio     { border-bottom-color: @red; background: @vitals-bg; }
+
+#custom-mpris-prev,
+#custom-mpris-now,
+#custom-mpris-next,
+#custom-cava {
+    border-bottom-color: @red;
+    background: @vitals-bg;
+    font-size: 12px;
+    padding: 1px 4px;
+    margin: 0;
+}
+
+/* Reimagined as one rounded pill — breaks from the bar's flat theme
+   deliberately, since this is the one "expressive" cell on the bar */
+#custom-mpris-prev {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    padding-left: 10px;
+}
+
+#custom-cava {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding-right: 10px;
+    min-width: 20px;
+}
+
 #network        { border-bottom-color: @blue; background: @vitals-bg; }
 #tray           { border-bottom-color: transparent; background: @vitals-bg; }
 #custom-notification { border-bottom-color: @yellow; background: @vitals-bg; }
@@ -150,11 +180,6 @@
 
 #workspaces button:hover {
     background: transparent;
-}
-
-/* Mpris */
-#mpris.paused {
-    color: @inactive;
 }
 
 /* Tooltips */
