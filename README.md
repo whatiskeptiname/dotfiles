@@ -136,14 +136,20 @@ ln -s ~/Documents/self/dotfiles/waybar/scripts/gpu.sh               ~/.config/wa
 ln -s ~/Documents/self/dotfiles/waybar/scripts/mic-vol.sh           ~/.config/waybar/scripts/mic-vol.sh
 ```
 
-### 6. Make scripts executable
+### 6. Symlink starship config
+
+```bash
+ln -s ~/Documents/self/dotfiles/starship/starship.toml ~/.config/starship.toml
+```
+
+### 7. Make scripts executable
 
 ```bash
 chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 chmod +x ~/Documents/self/dotfiles/waybar/scripts/*.sh
 ```
 
-### 7. Install Nepali fonts (optional)
+### 8. Install Nepali fonts (optional)
 
 ```bash
 cp ~/Documents/self/dotfiles/fonts/*.TTF ~/.local/share/fonts/
@@ -151,14 +157,14 @@ cp ~/Documents/self/dotfiles/fonts/*.ttf ~/.local/share/fonts/
 fc-cache -f
 ```
 
-### 8. Fix wallpaper path
+### 9. Fix wallpaper path
 
 Edit `sway/config` and update to your username:
 ```
 output * bg /home/<user>/Documents/self/dotfiles/wallpapers/purple.jpg fill
 ```
 
-### 9. Disable dunst (if installed)
+### 10. Disable dunst (if installed)
 
 swaync handles all notifications. If dunst is running it will conflict:
 ```bash
@@ -167,7 +173,7 @@ pkill dunst
 ls ~/.config/autostart/
 ```
 
-### 10. Start sway
+### 11. Start sway
 
 Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 
