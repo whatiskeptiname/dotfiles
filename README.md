@@ -2,7 +2,7 @@
 
 Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config in `legacy/` (unmaintained, kept for reference).
 
-![Sway Screenshot](./images/sway_kittys.png)
+![Sway Screenshot](./images/multi_window_sway.png)
 
 
 ---
