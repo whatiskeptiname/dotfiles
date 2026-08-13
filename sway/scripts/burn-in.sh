@@ -106,9 +106,10 @@ INFO_GROUP+=('"sway/workspaces"')
 
 SLIDERS=("pulseaudio#source" pulseaudio backlight)
 SLIDERS_SHUFFLED=($(printf '%s\n' "${SLIDERS[@]}" | shuf))
-CONTROL_GROUP=()
+# Media leads the group (index 0 = closest to clock) — it should always be
+# the control-side module nearest the clock, whichever side it lands on.
+CONTROL_GROUP=('"custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava"')
 for m in "${SLIDERS_SHUFFLED[@]}"; do CONTROL_GROUP+=("\"$m\""); done
-CONTROL_GROUP+=('"custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava"')
 CONTROL_GROUP+=('"custom/notification"')
 CONTROL_GROUP+=('"tray"')
 
@@ -135,7 +136,7 @@ fi
 sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
   -e "s|\"modules-left\": \[\"sway/workspaces\", \"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\"\]|\"modules-left\": [$MODULES_LEFT]|" \
-  -e "s|\"modules-right\": \[\"pulseaudio#source\", \"pulseaudio\", \"backlight\", \"custom/mpris-prev\", \"custom/mpris-now\", \"custom/mpris-next\", \"custom/cava\", \"custom/notification\", \"tray\"\]|\"modules-right\": [$MODULES_RIGHT]|" \
+  -e "s|\"modules-right\": \[\"custom/mpris-prev\", \"custom/mpris-now\", \"custom/mpris-next\", \"custom/cava\", \"pulseaudio#source\", \"pulseaudio\", \"backlight\", \"custom/notification\", \"tray\"\]|\"modules-right\": [$MODULES_RIGHT]|" \
   -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"
 
@@ -160,10 +161,10 @@ css_id() {  # "custom/gpu" -> "#custom-gpu"; "pulseaudio#source" -> "#pulseaudio
   for i in "${!INFO_SHUFFLED[@]}"; do
     echo "$(css_id "${INFO_SHUFFLED[$i]}") { border-bottom-color: ${INFO_COLORS[$i]}; }"
   done
+  echo "#custom-mpris-prev, #custom-mpris-now, #custom-mpris-next, #custom-cava { border-bottom-color: ${CONTROL_COLORS[0]}; }"
   for i in "${!SLIDERS_SHUFFLED[@]}"; do
-    echo "$(css_id "${SLIDERS_SHUFFLED[$i]}") { border-bottom-color: ${CONTROL_COLORS[$i]}; }"
+    echo "$(css_id "${SLIDERS_SHUFFLED[$i]}") { border-bottom-color: ${CONTROL_COLORS[$((i + 1))]}; }"
   done
-  echo "#custom-mpris-prev, #custom-mpris-now, #custom-mpris-next, #custom-cava { border-bottom-color: ${CONTROL_COLORS[3]}; }"
   echo "#custom-notification { border-bottom-color: ${CONTROL_COLORS[4]}; }"
   echo "#clock { color: $ACCENT; }"
 } > "$WAYBAR_CSS_RUNTIME"

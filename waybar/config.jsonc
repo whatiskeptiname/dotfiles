@@ -7,7 +7,7 @@
 
     "modules-left": ["sway/workspaces", "cpu", "temperature", "memory", "custom/gpu", "disk", "battery"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio#source", "pulseaudio", "backlight", "custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "custom/notification", "tray"],
+    "modules-right": ["custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "pulseaudio#source", "pulseaudio", "backlight", "custom/notification", "tray"],
 
     "sway/workspaces": {
         "disable-scroll": true,
