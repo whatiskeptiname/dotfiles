@@ -5,9 +5,9 @@
     "height": 30,
     "spacing": 4,
 
-    "modules-left": ["sway/workspaces"],
-    "modules-center": ["custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "clock"],
-    "modules-right": ["cpu", "temperature", "memory", "custom/gpu", "disk", "battery", "backlight", "pulseaudio", "pulseaudio#source", "custom/notification", "tray"],
+    "modules-left": ["sway/workspaces", "cpu", "temperature", "memory", "custom/gpu", "disk", "battery"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio#source", "pulseaudio", "backlight", "custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "custom/notification", "tray"],
 
     "sway/workspaces": {
         "disable-scroll": true,
