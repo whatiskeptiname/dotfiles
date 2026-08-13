@@ -120,7 +120,6 @@ ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh          ~/.config/sway/
 ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh             ~/.config/sway/scripts/lock.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh        ~/.config/sway/scripts/powermenu.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh       ~/.config/sway/scripts/notify-osd.sh
-ln -s ~/Documents/self/dotfiles/sway/scripts/waybar.sh           ~/.config/sway/scripts/waybar.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/window-switcher.sh  ~/.config/sway/scripts/window-switcher.sh
 chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 ```
@@ -132,7 +131,8 @@ ln -s ~/Documents/self/dotfiles/waybar/config.jsonc                 ~/.config/wa
 ln -s ~/Documents/self/dotfiles/waybar/style.css                    ~/.config/waybar/style.css
 ln -s ~/Documents/self/dotfiles/waybar/colors/colors.dark.css       ~/.config/waybar/colors/colors.dark.css
 ln -s ~/Documents/self/dotfiles/waybar/scripts/gpu.sh               ~/.config/waybar/scripts/gpu.sh
-ln -s ~/Documents/self/dotfiles/waybar/scripts/mic-vol.sh           ~/.config/waybar/scripts/mic-vol.sh
+ln -s ~/Documents/self/dotfiles/waybar/scripts/cava-viz.sh          ~/.config/waybar/scripts/cava-viz.sh
+ln -s ~/Documents/self/dotfiles/waybar/scripts/mpris-now.sh         ~/.config/waybar/scripts/mpris-now.sh
 ```
 
 ### 6. Symlink starship config
