@@ -161,14 +161,6 @@
         "escape": true
     },
 
-    "network": {
-        "format-wifi": "󰖩 {essid} ({signalStrength}%)",
-        "format-ethernet": "󰈀 {ipaddr}",
-        "format-disconnected": "󰖪",
-        "format-alt": "󰈀 {ifname}: {ipaddr}/{cidr}",
-        "tooltip-format": "{essid} — {ifname} via {gwaddr}"
-    },
-
     "tray": {
         "icon-size": 13,
         "spacing": 8

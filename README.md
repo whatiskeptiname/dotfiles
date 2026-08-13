@@ -17,6 +17,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `swaylock` | Lock screen |
 | `swayidle` | Idle management (auto-lock + display off) |
 | `rofi` | App launcher, window switcher, power menu |
+| `jq` | Parses `swaymsg`'s window tree for the window switcher (`Mod+Tab`) |
 | `kitty` | Terminal emulator |
 | `starship` | Clean, minimal cross-shell prompt |
 
@@ -31,9 +32,12 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | App | Purpose |
 |-----|---------|
 | `wireplumber` / `wpctl` | Audio control (PipeWire) |
+| `pulseaudio-utils` / `pactl` | Mic mute toggle on the waybar mic icon |
+| `pavucontrol` | GUI mixer — opens on clicking the waybar volume icon |
 | `brightnessctl` | Brightness control |
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
+| `libnotify` / `notify-send` | Popup shown when toggling focus mode (DND) |
 | `playerctl` | MPRIS media control — drives the waybar music cell |
 | `cava` | Audio spectrum analyzer — feeds the waybar music cell's visualizer |
 
@@ -62,8 +66,8 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 ### 1. Install dependencies
 
 ```bash
-sudo dnf install sway waybar swaylock swayidle rofi kitty thunar \
-  wireplumber brightnessctl grim slurp swappy \
+sudo dnf install sway waybar swaylock swayidle rofi kitty thunar jq libnotify \
+  wireplumber brightnessctl pulseaudio-utils pavucontrol grim slurp swappy \
   copyq network-manager-applet blueman playerctl \
   xdg-desktop-portal-wlr xdg-desktop-portal-gtk
 ```
@@ -204,10 +208,21 @@ Lock · Shutdown · Reboot · Suspend · Hibernate · Exit Sway
 ### OLED Burn-in Prevention (`sway/scripts/burn-in.sh`)
 Runs on every sway start/reload and randomizes:
 - **Wallpaper** — picks randomly from `wallpapers/`
-- **Waybar position** — top-left, top-right, bottom-left, bottom-right
-- **Module order** — shuffles vitals modules each boot
-- **Accent colors** — 12-color pool, all unique per module underline, cycles before repeating
-- **Window border color** — matches the accent color
+- **Waybar position** — top or bottom
+- **Module layout** — the clock always sits alone in the center (pixel-centered on
+  the bar); read-only sensors (cpu, temperature, memory, gpu, disk, battery) group
+  with the workspace switcher on one side, while things you interact with (volume,
+  brightness, mic, media transport, notification, tray) group on the other — which
+  physical side gets which group flips each boot. Workspaces and tray are always
+  the outermost module on their side; the rest of each group, including media, is
+  always the one closest to the clock. Sensors are shuffled within their group for
+  extra pixel variation; media/notification/tray always keep their fixed order.
+- **Accent colors** — a two-hue gradient theme: one hue for the sensor side, a
+  second hue 140° away for the control side, each rendered as a lightness sweep
+  from darker at the edge to lighter toward the clock. The clock takes the hue
+  exactly between the two. The hue pair rotates from a fixed pool each boot
+  (rotate-before-repeat, so all pairs cycle before any repeat).
+- **Window border color** — matches the clock's blended accent color
 
 ### Music Cell (waybar, center, beside the clock)
 Visible whenever a player is **Playing** or **Paused** — only disappears when fully stopped:
@@ -215,10 +230,11 @@ Visible whenever a player is **Playing** or **Paused** — only disappears when 
 - **Now playing** — scrolling marquee (artist - title), icon swaps play/pause with real status
 - **Click the track name** — toggles play/pause (`playerctl play-pause`)
 - **Cava spectrum visualizer** — 8-bar rainbow histogram driven by real audio (`waybar/scripts/cava-viz.sh`, config in `cava/`)
-- Side of the clock flips with the vitals cluster in `burn-in.sh`, so it always sits away from vitals
+- Always the module closest to the clock, whichever physical side it lands on (see OLED Burn-in Prevention below)
 
 ### Notifications
 - **swayosd** — pill-style OSD overlay for volume/brightness/mic
+- Volume, mic, and brightness are also directly scroll/click-controllable on their waybar icons, not just via the `XF86` media keys — scroll raises/lowers, clicking volume opens `pavucontrol`, clicking mic toggles mute
 - **swaync** — full notification daemon + panel (`Mod+n`)
 - **Focus mode / DND** — `Mod+Shift+n` or right-click the waybar bell icon toggles Do Not Disturb; the icon switches to a crossed-out bell while muted
 

@@ -2,7 +2,9 @@
 pgrep -x swaylock > /dev/null && exit 0   # no-op if timeout and before-sleep both fire
 WALLPAPER=$(cat "$HOME/.cache/current-wallpaper" 2>/dev/null)
 
-# Same palette as burn-in — red reserved for wrong-password state
+# Own copy of a Tokyo Night-style palette (burn-in.sh now generates its
+# colors from rotating hues, not a fixed pool, so there's nothing shared
+# to point at here) — red is reserved for the wrong-password state
 COLOR_POOL=(
     "7aa2f7" "9ece6a" "e0af68" "bb9af7"
     "7dcfff" "ff9e64" "2ac3de" "41a6b5"
