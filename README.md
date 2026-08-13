@@ -54,7 +54,6 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 
 ### Fonts
 - **CaskaydiaCove Nerd Font** — UI font (bar, borders, icons)
-- Nepali TTF fonts in `fonts/` — optional, for Nepali language support
 
 ---
 
@@ -149,22 +148,14 @@ chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 chmod +x ~/Documents/self/dotfiles/waybar/scripts/*.sh
 ```
 
-### 8. Install Nepali fonts (optional)
-
-```bash
-cp ~/Documents/self/dotfiles/fonts/*.TTF ~/.local/share/fonts/
-cp ~/Documents/self/dotfiles/fonts/*.ttf ~/.local/share/fonts/
-fc-cache -f
-```
-
-### 9. Fix wallpaper path
+### 8. Fix wallpaper path
 
 Edit `sway/config` and update to your username:
 ```
 output * bg /home/<user>/Documents/self/dotfiles/wallpapers/purple.jpg fill
 ```
 
-### 10. Disable dunst (if installed)
+### 9. Disable dunst (if installed)
 
 swaync handles all notifications. If dunst is running it will conflict:
 ```bash
@@ -173,7 +164,7 @@ pkill dunst
 ls ~/.config/autostart/
 ```
 
-### 11. Start sway
+### 10. Start sway
 
 Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 
