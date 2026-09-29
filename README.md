@@ -121,6 +121,7 @@ mkdir -p ~/.config/waybar/colors
 ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/config
 ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
 ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh          ~/.config/sway/scripts/burn-in.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/idle.sh             ~/.config/sway/scripts/idle.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh             ~/.config/sway/scripts/lock.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh        ~/.config/sway/scripts/powermenu.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/notify-osd.sh       ~/.config/sway/scripts/notify-osd.sh
@@ -239,8 +240,10 @@ Visible whenever a player is **Playing** or **Paused** — only disappears when 
 - **Focus mode / DND** — `Mod+Shift+n` or right-click the waybar bell icon toggles Do Not Disturb; the icon switches to a crossed-out bell while muted
 
 ### Idle & Lock
-- Display powers off after **1 minute** of inactivity, back on when activity resumes
-- Screen locks after **3 minutes** of inactivity
+Handled by `swayidle`, launched from `sway/scripts/idle.sh` (restarted on every sway start/reload):
+- Screen dims to 1% after **3 minutes** of inactivity, restores brightness on activity
+- Screen locks after **10 minutes** of inactivity
+- Display powers off 2 seconds after locking, back on when activity resumes
 - Locks before sleep and via power menu (`Mod+Shift+Delete → Lock`)
 
 Lock screen (`sway/scripts/lock.sh`):

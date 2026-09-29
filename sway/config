@@ -69,11 +69,7 @@ workspace 9  output HDMI-A-1
 workspace 10 output HDMI-A-1
 
 # Idle configuration
-exec_always pkill -x swayidle; swayidle -w \
-          timeout 180   'brightnessctl -s set 1%'        resume 'brightnessctl -r' \
-          timeout 600  '$HOME/.config/sway/scripts/lock.sh' \
-          timeout 602  'swaymsg "output * power off"'   resume 'swaymsg "output * power on"' \
-          before-sleep '$HOME/.config/sway/scripts/lock.sh'
+exec_always $HOME/.config/sway/scripts/idle.sh
 
 # Input configuration
 input type:touchpad {
