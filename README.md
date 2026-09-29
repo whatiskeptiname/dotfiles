@@ -129,6 +129,13 @@ ln -s ~/Documents/self/dotfiles/sway/scripts/window-switcher.sh  ~/.config/sway/
 chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 ```
 
+> **No `~/.config/sway/config.d/` needed.** Fedora's stock `/etc/sway/config`
+> layers in `/usr/share/sway/config.d/*.conf` (including a `90-bar.conf` that
+> starts its own waybar), and an empty same-named file in `~/.config/sway/config.d/`
+> is the usual way to disable one. This `sway/config` replaces the stock config
+> entirely and has no `include` line, so none of those drop-ins load — waybar is
+> started only by `burn-in.sh`.
+
 ### 5. Symlink waybar configs
 
 ```bash
