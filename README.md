@@ -38,7 +38,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
 | `libnotify` / `notify-send` | Popup shown when toggling focus mode (DND) |
-| `playerctl` | MPRIS media control — drives the waybar music cell |
+| `playerctl` | MPRIS media control — drives the waybar music cell (`playerctld` daemon, autostarted by sway, makes it follow the active player) |
 | `cava` | Audio spectrum analyzer — feeds the waybar music cell's visualizer |
 
 ### Screenshot

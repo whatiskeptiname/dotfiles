@@ -246,6 +246,7 @@ bindsym $mod+Shift+Delete exec $HOME/.config/sway/scripts/powermenu.sh
 exec copyq            # clipboard manager (tray)
 exec_always sh -c 'pkill -x swaync; swaync'  # notification daemon
 exec swayosd-server   # OSD for volume/brightness
+exec playerctld daemon  # track the active MPRIS player, so bare `playerctl` doesn't read a stale Stopped one
 exec nm-applet --indicator  # wifi (tray)
 exec blueman-applet   # bluetooth (tray)
 
