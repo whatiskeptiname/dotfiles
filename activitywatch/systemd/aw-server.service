@@ -1,0 +1,12 @@
+[Unit]
+Description=ActivityWatch server (dashboard at http://localhost:5600)
+PartOf=sway-session.target
+After=sway-session.target
+
+[Service]
+ExecStart=%h/.local/opt/activitywatch/aw-server-rust/aw-server-rust
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=sway-session.target

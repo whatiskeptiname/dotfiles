@@ -56,6 +56,12 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `nm-applet` | WiFi tray icon |
 | `blueman-applet` | Bluetooth tray icon |
 
+### Usage Tracking
+| App | Purpose |
+|-----|---------|
+| `activitywatch` | Local time-tracking server + dashboard (`http://localhost:5600`) |
+| `python3-i3ipc` | Lets `aw-watcher-sway.py` read sway's window tree |
+
 ### Fonts
 - **CaskaydiaCove Nerd Font** — UI font (bar, borders, icons)
 
@@ -176,7 +182,32 @@ pkill dunst
 ls ~/.config/autostart/
 ```
 
-### 10. Start sway
+### 10. Set up usage tracking (optional)
+
+Download the ActivityWatch Linux `.zip` from the
+[releases page](https://github.com/ActivityWatch/activitywatch/releases) and unpack it
+so the server lands at `~/.local/opt/activitywatch/aw-server-rust/aw-server-rust`.
+Only that server is used — the bundled `aw-qt` and its X11 watchers don't work on Wayland.
+
+```bash
+sudo dnf install python3-i3ipc
+mkdir -p ~/.local/opt && unzip activitywatch-*-linux-x86_64.zip -d ~/.local/opt
+chmod +x ~/.local/opt/activitywatch/aw-server-rust/aw-server-rust
+
+mkdir -p ~/.config/activitywatch ~/.config/systemd/user
+ln -s ~/Documents/self/dotfiles/activitywatch/aw-watcher-sway.py              ~/.config/activitywatch/aw-watcher-sway.py
+ln -s ~/Documents/self/dotfiles/activitywatch/systemd/aw-server.service       ~/.config/systemd/user/aw-server.service
+ln -s ~/Documents/self/dotfiles/activitywatch/systemd/aw-watcher-sway.service ~/.config/systemd/user/aw-watcher-sway.service
+chmod +x ~/Documents/self/dotfiles/activitywatch/aw-watcher-sway.py
+systemctl --user daemon-reload
+systemctl --user enable --now aw-server.service aw-watcher-sway.service
+```
+
+Both units hang off `sway-session.target`, so they start and stop with sway.
+For per-website / per-video time, also install the **ActivityWatch Web Watcher**
+extension from the Chrome Web Store.
+
+### 11. Start sway
 
 Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 
@@ -266,6 +297,31 @@ Lock screen (`sway/scripts/lock.sh`):
 ### Urgent Windows
 - 3px bright red border box on urgent windows
 - Blinking workspace indicator in waybar
+
+### Usage Tracking (`activitywatch/aw-watcher-sway.py`)
+Daily per-app time in the ActivityWatch dashboard (`http://localhost:5600`).
+Mainstream trackers (RescueTime, ActivityWatch's own watchers) count only the focused
+window and treat you as away after a few minutes without input — so a video you're
+watching counts as idle, and anything on a second monitor counts as nothing. This
+watcher uses sway's window tree plus PipeWire/MPRIS to do better:
+
+- **Focused window** is the app being used. Focus follows the mouse, so moving to the
+  other monitor and pointing at a window counts naturally.
+- **Away (AFK)** after **3 minutes** without keyboard/mouse input…
+- …**unless the focused app is playing media** — its window inhibits idle (fullscreen
+  video), it has an active audio stream, or its MPRIS player is Playing. Watching a
+  video isn't idle time.
+- **Unfocused windows count as nothing** — like hidden windows — even when visible on
+  the second monitor. The exception: one that's **playing media** is logged as
+  *background watching* in the `aw-watcher-sway-media_<host>` bucket, e.g. a video on
+  HDMI while you code on the laptop screen.
+- Audio from an app with no visible window (music in a scratchpad or another
+  workspace) is logged in the same bucket with `visible: false` — listening time,
+  kept separate from screen time.
+
+The focused-window and AFK data use ActivityWatch's standard bucket names, so the
+dashboard's Activity view, top apps and categories work out of the box; background
+media shows in the Timeline view.
 
 ---
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=ActivityWatch watcher for sway (focused window, AFK, background media)
+PartOf=sway-session.target
+After=sway-session.target aw-server.service
+Wants=aw-server.service
+
+[Service]
+ExecStart=%h/.config/activitywatch/aw-watcher-sway.py
+# Exits if sway or aw-server goes away; systemd brings it back once they're up.
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=sway-session.target
