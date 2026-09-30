@@ -88,8 +88,25 @@ def norm(name):
     return re.sub(r"[^a-z0-9]", "", (name or "").lower())
 
 
+# The web UI (v0.13.2) links browser-extension events to the focused window by
+# exact app name, using X11 class names — Wayland's lowercase app_id
+# ("google-chrome") isn't on its list, so browser time would show "No data".
+AW_APP_NAMES = {n.lower(): n for n in ("Google-chrome", "Chromium", "Chromium-browser")}
+
+
 def app_of(con):
-    return con.app_id or con.window_class or "unknown"  # window_class = XWayland
+    app = con.app_id or con.window_class or "unknown"  # window_class = XWayland
+    return AW_APP_NAMES.get(app.lower(), app)
+
+
+# Claude Code animates its tab title (◐ ◑ … while working, ✳ when idle). Left
+# as-is, every frame is a new title, so heartbeats never merge and a minute of
+# work becomes 60 one-second events. Collapse the frames to the idle glyph.
+SPINNER = re.compile(r"[◐◑◒◓]")
+
+
+def title_of(con):
+    return SPINNER.sub("✳", con.name or "")
 
 
 def windows(tree):
@@ -184,7 +201,7 @@ def main():
 
         # Focused time (rule 1)
         if focused is not None:
-            heartbeat(BUCKET_WINDOW, {"app": app_of(focused), "title": focused.name or ""},
+            heartbeat(BUCKET_WINDOW, {"app": app_of(focused), "title": title_of(focused)},
                       pulsetime=WINDOW_POLL + 1)
 
         now = time.monotonic()
@@ -205,7 +222,7 @@ def main():
             bg.sort(key=lambda w: not w[0].ipc_data.get("visible"))
             if bg:
                 con, out = bg[0]
-                heartbeat(BUCKET_MEDIA, {"app": app_of(con), "title": con.name or "",
+                heartbeat(BUCKET_MEDIA, {"app": app_of(con), "title": title_of(con),
                                          "output": out,
                                          "visible": bool(con.ipc_data.get("visible"))},
                           pulsetime=MEDIA_POLL + 1)
