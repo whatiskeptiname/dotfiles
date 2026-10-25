@@ -33,7 +33,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 |-----|---------|
 | `wireplumber` / `wpctl` | Audio control (PipeWire) |
 | `pulseaudio-utils` / `pactl` | Mic mute toggle on the waybar mic icon |
-| `pavucontrol` | GUI mixer — opens on clicking the waybar volume icon |
+| `pavucontrol` | GUI mixer — clicking the waybar volume icon opens its Output Devices tab |
 | `brightnessctl` | Brightness control |
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
@@ -273,7 +273,7 @@ Visible whenever a player is **Playing** or **Paused** — only disappears when 
 
 ### Notifications
 - **swayosd** — pill-style OSD overlay for volume/brightness/mic
-- Volume, mic, and brightness are also directly scroll/click-controllable on their waybar icons, not just via the `XF86` media keys — scroll raises/lowers, clicking volume opens `pavucontrol`, clicking mic toggles mute
+- Volume, mic, and brightness are also directly scroll/click-controllable on their waybar icons, not just via the `XF86` media keys — scroll raises/lowers, clicking volume opens `pavucontrol` on the Output Devices tab, clicking mic toggles mute
 - **swaync** — full notification daemon + panel (`Mod+n`)
 - **Focus mode / DND** — `Mod+Shift+n` or right-click the waybar bell icon toggles Do Not Disturb; the icon switches to a crossed-out bell while muted
 
