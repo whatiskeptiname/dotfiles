@@ -238,7 +238,7 @@ Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 | `XF86MonBrightnessDown` | Brightness down 5% (swayosd) |
 
 ### Power menu (`Mod+Shift+Delete`)
-Lock · Shutdown · Reboot · Suspend · Hibernate · Exit Sway
+Lock · Shutdown · Reboot · Suspend · Exit Sway
 
 ---
 
