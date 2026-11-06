@@ -279,9 +279,10 @@ Visible whenever a player is **Playing** or **Paused** — only disappears when 
 
 ### Idle & Lock
 Handled by `swayidle`, launched from `sway/scripts/idle.sh` (restarted on every sway start/reload):
-- Screen dims to 1% after **3 minutes** of inactivity, restores brightness on activity
-- Screen locks after **10 minutes** of inactivity
-- Display powers off 2 seconds after locking, back on when activity resumes
+- Screen dims to 1% after **3 minutes** of inactivity
+- On battery: the laptop locks and suspends after **10 minutes** of inactivity
+- On the charger: the screen locks after **19 minutes** of inactivity and the display powers off 2 seconds later. It doesn't suspend by itself
+- Brightness and the display come back on activity
 - Locks before sleep and via power menu (`Mod+Shift+Delete → Lock`)
 - Closing the lid does nothing, plugged in or not. Suspend from the power menu. Set by
   `system/logind/10-lid-ignore.conf`; copy it rather than symlinking, since logind runs
