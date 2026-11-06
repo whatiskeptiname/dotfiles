@@ -283,6 +283,14 @@ Handled by `swayidle`, launched from `sway/scripts/idle.sh` (restarted on every 
 - Screen locks after **10 minutes** of inactivity
 - Display powers off 2 seconds after locking, back on when activity resumes
 - Locks before sleep and via power menu (`Mod+Shift+Delete → Lock`)
+- Closing the lid does nothing, plugged in or not. Suspend from the power menu. Set by
+  `system/logind/10-lid-ignore.conf`; copy it rather than symlinking, since logind runs
+  as a system service:
+  ```bash
+  sudo mkdir -p /etc/systemd/logind.conf.d
+  sudo cp ~/Documents/self/dotfiles/system/logind/10-lid-ignore.conf /etc/systemd/logind.conf.d/
+  sudo systemctl kill -s HUP systemd-logind
+  ```
 
 Lock screen (`sway/scripts/lock.sh`):
 - Shows the current random wallpaper as background (falls back to solid black)
