@@ -101,12 +101,33 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}% {time}",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰚥 {capacity}%",
-        "format-full": "󰁹 {capacity}%",
+        // Unplugged: battery level. Charging: charging-bolt level. On AC but
+        // not charging (charge threshold / held): power plug. On AC and full:
+        // battery with a check mark.
+        // Click toggles the time (left on battery / to full while charging).
+        // No format-charging/-discharging on purpose: a status format would
+        // override format-alt and break the toggle.
+        "format": "{icon} {capacity}%",
+        "format-alt": "{icon} {capacity}% {time}",
+        "format-not-charging": "{icon} {capacity}%",
+        "format-plugged": "{icon} {capacity}%",
+        "format-full": "{icon} {capacity}%",
+        "format-unknown": "{icon} {capacity}%",
         "format-time": "{H}∶{M:02}",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+        "tooltip-format":              "On battery · drawing {power:.1f} W · {capacity}%\n{time} left\nHealth {health}% · {cycles} cycles",
+        "tooltip-format-charging":     "Charging at {power:.1f} W · {capacity}%\nFull in {time}\nHealth {health}% · {cycles} cycles",
+        "tooltip-format-not-charging": "Plugged in · not charging · {capacity}%\nHealth {health}% · {cycles} cycles",
+        "tooltip-format-plugged":      "Plugged in · not charging · {capacity}%\nHealth {health}% · {cycles} cycles",
+        "tooltip-format-full":         "Plugged in · fully charged\nHealth {health}% · {cycles} cycles",
+        "tooltip-format-unknown":      "Battery status unknown · {capacity}%\nHealth {health}% · {cycles} cycles",
+        "format-icons": {
+            "default":      ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+            "charging":     ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+            "not-charging": ["󰚥"],
+            "plugged":      ["󰚥"],
+            "full":         ["󱟢"],
+            "unknown":      ["󰂑"]
+        }
     },
 
     "backlight": {
