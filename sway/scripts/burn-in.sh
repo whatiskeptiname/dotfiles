@@ -166,7 +166,7 @@ css_id() {  # "custom/gpu" -> "#custom-gpu"; "pulseaudio#source" -> "#pulseaudio
     echo "$(css_id "${SLIDERS_SHUFFLED[$i]}") { border-bottom-color: ${CONTROL_COLORS[$((i + 1))]}; }"
   done
   echo "#custom-notification { border-bottom-color: ${CONTROL_COLORS[4]}; }"
-  echo "#clock { color: $ACCENT; }"
+  echo "#custom-pomodoro { color: $ACCENT; }"
 } > "$WAYBAR_CSS_RUNTIME"
 
 # ── 5. Apply accent color to sway window borders ─────────────────────────

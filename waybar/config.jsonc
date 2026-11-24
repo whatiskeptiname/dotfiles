@@ -6,7 +6,7 @@
     "spacing": 4,
 
     "modules-left": ["sway/workspaces", "cpu", "temperature", "memory", "custom/gpu", "disk", "battery"],
-    "modules-center": ["clock"],
+    "modules-center": ["custom/pomodoro"],
     "modules-right": ["custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "pulseaudio#source", "pulseaudio", "backlight", "custom/notification", "tray"],
 
     "sway/workspaces": {
@@ -50,12 +50,24 @@
         "tooltip": false
     },
 
-    "clock": {
-        "timezone": "Asia/Kathmandu",
-        "format": "{:%H∶%M∶%S}",
-        "format-alt": "{:%a, %Y-%m-%d %H∶%M∶%S}",
+    // Clock + pomodoro in one cell (waybar can't hide its built-in clock on
+    // demand). Idle: the clock, left-click toggles the date as before.
+    // Started from the right-click panel, it shows the countdown; left-click
+    // then swaps in the full date and time, middle-click pauses. The tooltip
+    // is always the calendar. The '∶' argument is
+    // the clock separator burn-in.sh rotates.
+    "custom/pomodoro": {
+        "exec": "~/.config/waybar/scripts/pomodoro.sh status '∶'",
+        "return-type": "json",
+        "format": "{}",
         "interval": 1,
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+        "signal": 9,
+        "on-click": "~/.config/waybar/scripts/pomodoro.sh view",
+        "on-click-right": "~/.config/waybar/scripts/pomodoro-panel.py",
+        "on-click-middle": "~/.config/waybar/scripts/pomodoro.sh pause",
+        "on-scroll-up": "~/.config/waybar/scripts/pomodoro.sh adjust 1",
+        "on-scroll-down": "~/.config/waybar/scripts/pomodoro.sh adjust -1",
+        "tooltip": true
     },
 
     "cpu": {

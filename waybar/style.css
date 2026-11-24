@@ -28,7 +28,7 @@
 #disk,
 #backlight,
 #pulseaudio,
-#clock,
+#custom-pomodoro,
 #tray,
 #custom-gpu,
 #custom-notification {
@@ -86,11 +86,17 @@
     color: @red;
 }
 
-#clock {
+#custom-pomodoro {
     background: @module-bg;
     padding: 1px 18px;
     border-radius: 0;
 }
+
+/* Pomodoro states — idle is the plain clock and keeps the accent color */
+#custom-pomodoro.work   { color: @red; }
+#custom-pomodoro.break  { color: @green; }
+#custom-pomodoro.paused { color: @inactive; }
+#custom-pomodoro.ready  { color: @yellow; }
 
 /* State colors */
 #cpu.critical,
