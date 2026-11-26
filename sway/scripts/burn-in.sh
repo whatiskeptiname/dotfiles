@@ -38,7 +38,7 @@ echo "$IDX" >> "$STATE_FILE"
 
 HUE_INFO=${ANCHOR_HUES[$IDX]}
 
-# 6 info shades + 5 control shades + 1 clock color (info/control's blend)
+# 5 info shades + 5 control shades + 1 clock color (info/control's blend)
 read -ra THEME_COLORS <<< "$(python3 -c "
 import colorsys, sys
 
@@ -58,7 +58,7 @@ def shade(h, l, s=0.62):
     r, g, b = colorsys.hls_to_rgb(h, l, s)
     return '#%02x%02x%02x' % (round(r * 255), round(g * 255), round(b * 255))
 
-n_info, n_control = 6, 5
+n_info, n_control = 5, 5
 info = [shade(h_info, 0.72 - i * 0.32 / (n_info - 1)) for i in range(n_info)]
 control = [shade(h_control, 0.72 - i * 0.32 / (n_control - 1)) for i in range(n_control)]
 clock = shade(h_clock, 0.62, 0.68)
@@ -66,9 +66,9 @@ clock = shade(h_clock, 0.62, 0.68)
 print(' '.join(info + control + [clock]))
 " "$HUE_INFO")"
 
-INFO_COLORS=("${THEME_COLORS[@]:0:6}")
-CONTROL_COLORS=("${THEME_COLORS[@]:6:5}")
-ACCENT="${THEME_COLORS[11]}"
+INFO_COLORS=("${THEME_COLORS[@]:0:5}")
+CONTROL_COLORS=("${THEME_COLORS[@]:5:5}")
+ACCENT="${THEME_COLORS[10]}"
 
 # ── Clock separator (shifts pixels each boot) ────────────────────────────
 SEP_POOL=(":" "-" "_" " " "∶")
@@ -98,7 +98,7 @@ FLIPPED=$((RANDOM % 2))
 # physical side FLIPPED sends a group to. Media is the one exception kept
 # as a single opaque element, so its internal prev/track/next/visualizer
 # order never gets reversed along with everything else.
-INFO_ITEMS=("custom/cpu" temperature memory "custom/gpu" disk battery)
+INFO_ITEMS=("custom/cpu" memory "custom/gpu" disk battery)
 INFO_SHUFFLED=($(printf '%s\n' "${INFO_ITEMS[@]}" | shuf))
 INFO_GROUP=()
 for m in "${INFO_SHUFFLED[@]}"; do INFO_GROUP+=("\"$m\""); done
@@ -135,7 +135,7 @@ fi
 # ── 3. Build runtime waybar config ───────────────────────────────────────
 sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
-  -e "s|\"modules-left\": \[\"sway/workspaces\", \"custom/cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\"\]|\"modules-left\": [$MODULES_LEFT]|" \
+  -e "s|\"modules-left\": \[\"sway/workspaces\", \"custom/cpu\", \"memory\", \"custom/gpu\", \"disk\", \"battery\"\]|\"modules-left\": [$MODULES_LEFT]|" \
   -e "s|\"modules-right\": \[\"custom/mpris-prev\", \"custom/mpris-now\", \"custom/mpris-next\", \"custom/cava\", \"pulseaudio#source\", \"pulseaudio\", \"backlight\", \"custom/notification\", \"tray\"\]|\"modules-right\": [$MODULES_RIGHT]|" \
   -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"

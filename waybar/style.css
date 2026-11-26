@@ -17,7 +17,6 @@
     color: @fg;
 }
 
-#temperature,
 #battery,
 #memory,
 #custom-mpris-prev,
@@ -39,7 +38,6 @@
 
 #custom-cpu     { border-bottom-color: @green;  background: @vitals-bg; }
 #custom-gpu     { border-bottom-color: @green;  background: @vitals-bg; }
-#temperature    { border-bottom-color: @yellow; background: @vitals-bg; }
 #memory         { border-bottom-color: @blue;   background: @vitals-bg; }
 #disk           { border-bottom-color: @blue;   background: @vitals-bg; }
 #battery        { border-bottom-color: @fg;     background: @vitals-bg; }
@@ -101,15 +99,13 @@
 /* State colors */
 #custom-cpu.critical,
 #memory.critical,
-#battery.critical,
-#temperature.critical {
+#battery.critical {
     color: @red;
 }
 
 #custom-cpu.warning,
 #memory.warning,
-#battery.warning,
-#temperature.warning {
+#battery.warning {
     color: @yellow;
     background: unset;
 }

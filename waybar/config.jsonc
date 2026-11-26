@@ -5,7 +5,7 @@
     "height": 30,
     "spacing": 4,
 
-    "modules-left": ["sway/workspaces", "custom/cpu", "temperature", "memory", "custom/gpu", "disk", "battery"],
+    "modules-left": ["sway/workspaces", "custom/cpu", "memory", "custom/gpu", "disk", "battery"],
     "modules-center": ["custom/pomodoro"],
     "modules-right": ["custom/mpris-prev", "custom/mpris-now", "custom/mpris-next", "custom/cava", "pulseaudio#source", "pulseaudio", "backlight", "custom/notification", "tray"],
 
@@ -70,12 +70,12 @@
         "tooltip": true
     },
 
-    // Script instead of the built-in cpu module so the tooltip can include
-    // the fans.
+    // Script instead of the built-in cpu module: shows usage and temperature
+    // in one cell like custom/gpu, and the tooltip can include the fans.
     "custom/cpu": {
         "exec": "~/.config/waybar/scripts/cpu.sh",
         "return-type": "json",
-        "format": " {}%",
+        "format": " {}",
         "interval": 1,
         "tooltip": true
     },
@@ -92,12 +92,6 @@
         },
         "interval": 2,
         "tooltip": true
-    },
-
-    "temperature": {
-        "critical-threshold": 80,
-        "format": "{icon} {temperatureC}°C",
-        "format-icons": ["󱃃", "󰔏", "󱃂"]
     },
 
     "memory": {

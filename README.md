@@ -17,7 +17,8 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `swaylock` | Lock screen |
 | `swayidle` | Idle management (auto-lock + display off) |
 | `rofi` | App launcher, window switcher, power menu |
-| `jq` | Parses `swaymsg`'s window tree for the window switcher (`Mod+Tab`) |
+| `jq` | Parses `swaymsg`'s window tree for the window switcher (`Mod+Tab`); builds the JSON for the waybar script modules |
+| `python3-gobject` + `gtk4-layer-shell` | The pomodoro panel (`waybar/scripts/pomodoro-panel.py`), a small GTK4 popup by the bar |
 | `kitty` | Terminal emulator |
 | `starship` | Clean, minimal cross-shell prompt |
 
@@ -37,7 +38,9 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `brightnessctl` | Brightness control |
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
-| `libnotify` / `notify-send` | Popup shown when toggling focus mode (DND) |
+| `libnotify` / `notify-send` | Popups for focus mode (DND) and pomodoro phase changes |
+| `pipewire-utils` / `pw-play` | Plays the charger plug/unplug and pomodoro sounds |
+| `sound-theme-freedesktop` | The sound files those use (`/usr/share/sounds/freedesktop/stereo/`) |
 | `playerctl` | MPRIS media control — drives the waybar music cell (`playerctld` daemon, autostarted by sway, makes it follow the active player) |
 | `cava` | Audio spectrum analyzer — feeds the waybar music cell's visualizer |
 
@@ -75,6 +78,7 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 sudo dnf install sway waybar swaylock swayidle rofi kitty thunar jq libnotify \
   wireplumber brightnessctl pulseaudio-utils pavucontrol grim slurp swappy \
   copyq network-manager-applet blueman playerctl \
+  pipewire-utils sound-theme-freedesktop python3-gobject gtk4-layer-shell \
   xdg-desktop-portal-wlr xdg-desktop-portal-gtk
 ```
 
@@ -117,8 +121,7 @@ git clone https://github.com/whatiskeptiname/dotfiles.git ~/Documents/self/dotfi
 
 ```bash
 mkdir -p ~/.config/sway/scripts
-mkdir -p ~/.config/waybar/scripts
-mkdir -p ~/.config/waybar/colors
+mkdir -p ~/.config/waybar
 ```
 
 ### 4. Symlink sway configs
@@ -127,6 +130,7 @@ mkdir -p ~/.config/waybar/colors
 ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/config
 ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
 ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh          ~/.config/sway/scripts/burn-in.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/charger-sound.sh    ~/.config/sway/scripts/charger-sound.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/idle.sh             ~/.config/sway/scripts/idle.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh             ~/.config/sway/scripts/lock.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh        ~/.config/sway/scripts/powermenu.sh
@@ -145,13 +149,14 @@ chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
 ### 5. Symlink waybar configs
 
 ```bash
-ln -s ~/Documents/self/dotfiles/waybar/config.jsonc                 ~/.config/waybar/config.jsonc
-ln -s ~/Documents/self/dotfiles/waybar/style.css                    ~/.config/waybar/style.css
-ln -s ~/Documents/self/dotfiles/waybar/colors/colors.dark.css       ~/.config/waybar/colors/colors.dark.css
-ln -s ~/Documents/self/dotfiles/waybar/scripts/gpu.sh               ~/.config/waybar/scripts/gpu.sh
-ln -s ~/Documents/self/dotfiles/waybar/scripts/cava-viz.sh          ~/.config/waybar/scripts/cava-viz.sh
-ln -s ~/Documents/self/dotfiles/waybar/scripts/mpris-now.sh         ~/.config/waybar/scripts/mpris-now.sh
+ln -s ~/Documents/self/dotfiles/waybar/config.jsonc ~/.config/waybar/config.jsonc
+ln -s ~/Documents/self/dotfiles/waybar/style.css    ~/.config/waybar/style.css
+ln -s ~/Documents/self/dotfiles/waybar/colors       ~/.config/waybar/colors
+ln -s ~/Documents/self/dotfiles/waybar/scripts      ~/.config/waybar/scripts
 ```
+
+`colors/` and `scripts/` are linked as whole directories, so new waybar scripts
+need no extra symlink.
 
 ### 6. Symlink starship config
 
@@ -163,7 +168,7 @@ ln -s ~/Documents/self/dotfiles/starship/starship.toml ~/.config/starship.toml
 
 ```bash
 chmod +x ~/Documents/self/dotfiles/sway/scripts/*.sh
-chmod +x ~/Documents/self/dotfiles/waybar/scripts/*.sh
+chmod +x ~/Documents/self/dotfiles/waybar/scripts/*.sh ~/Documents/self/dotfiles/waybar/scripts/*.py
 ```
 
 ### 8. Fix wallpaper path
@@ -248,8 +253,8 @@ Lock · Shutdown · Reboot · Suspend · Exit Sway
 Runs on every sway start/reload and randomizes:
 - **Wallpaper** — picks randomly from `wallpapers/`
 - **Waybar position** — top or bottom
-- **Module layout** — the clock always sits alone in the center (pixel-centered on
-  the bar); read-only sensors (cpu, temperature, memory, gpu, disk, battery) group
+- **Module layout** — the clock (with the pomodoro timer) always sits alone in the
+  center (pixel-centered on the bar); read-only sensors (cpu, memory, gpu, disk, battery) group
   with the workspace switcher on one side, while things you interact with (volume,
   brightness, mic, media transport, notification, tray) group on the other — which
   physical side gets which group flips each boot. Workspaces and tray are always
@@ -263,13 +268,49 @@ Runs on every sway start/reload and randomizes:
   (rotate-before-repeat, so all pairs cycle before any repeat).
 - **Window border color** — matches the clock's blended accent color
 
-### Music Cell (waybar, center, beside the clock)
+### Clock & Pomodoro (waybar, center — `waybar/scripts/pomodoro.sh`)
+One cell is both the clock and a pomodoro timer.
+- **Hover** — the month calendar, today underlined
+- **Left-click** — toggles the full date (`Thu, 2026-11-26 17∶47∶22`). While a
+  pomodoro runs, it swaps the countdown for the full date and time instead
+- **Right-click** — opens the pomodoro panel (`pomodoro-panel.py`, a GTK4
+  layer-shell popup next to the bar): start / pause / resume, skip, reset, and the
+  settings: work, short break and long break length, long break every N sessions,
+  sound, and whether work starts by itself after a break. Settings are saved to
+  `~/.config/waybar-pomodoro.conf` (outside the repo). It closes on Escape, a click
+  anywhere outside it, or another right-click
+- **Middle-click** — pause / resume (does nothing with no timer, so it can't start one by accident)
+- **Scroll** — add / remove a minute on the current phase
+- Once started, the cell shows the remaining time: red during work, green on a
+  break, grey when paused, yellow when a break is over and the next work session
+  is waiting for a click. Defaults: 25 min work, 5 min breaks, a 15 min break
+  after every 4th session
+- Each phase end sends a notification and plays a sound (`complete.oga` / `bell.oga`)
+- The timer keeps its state in `$XDG_RUNTIME_DIR`, so it survives the waybar
+  restarts `burn-in.sh` does on every sway reload
+
+### CPU & GPU Cells (`waybar/scripts/cpu.sh`, `gpu.sh`)
+- **CPU** — usage and temperature in one cell (`12% 45°C`), like the GPU cell
+  (`usage% VRAM temp`). The temperature is the CPU's own sensor (k10temp Tctl);
+  the cell turns red at 80 °C. Hover: total usage, average clock, fans, per-core usage
+- **GPU** — click cycles which GPU the cell shows; hover lists every GPU
+- **Fans** — both tooltips end with `Fans: X · Y RPM` (or `Fans: off`), from
+  `waybar/scripts/fans.sh`. It reads the `lenovo_wmi_other` hwmon sensor; `yogafan`
+  also exists on this Legion but always reads 0. The firmware runs both fans as a
+  pair over shared heat pipes (a CPU-only or GPU-only load raises both alike), so
+  neither is a CPU or GPU fan and both tooltips show both
+
+### Charger Sound (`sway/scripts/charger-sound.sh`)
+Plays the freedesktop `power-plug` / `power-unplug` sounds when the charger is
+connected or removed. Started once per session from `sway/config`.
+
+### Music Cell (waybar, beside the clock)
 Visible whenever a player is **Playing** or **Paused** — only disappears when fully stopped:
 - **Prev / next** — dedicated buttons, `playerctl previous`/`next`
 - **Now playing** — scrolling marquee (artist - title), icon swaps play/pause with real status
 - **Click the track name** — toggles play/pause (`playerctl play-pause`)
 - **Cava spectrum visualizer** — 8-bar rainbow histogram driven by real audio (`waybar/scripts/cava-viz.sh`, config in `cava/`)
-- Always the module closest to the clock, whichever physical side it lands on (see OLED Burn-in Prevention below)
+- Always the module closest to the clock, whichever physical side it lands on (see OLED Burn-in Prevention above)
 
 ### Notifications
 - **swayosd** — pill-style OSD overlay for volume/brightness/mic
@@ -295,7 +336,7 @@ Handled by `swayidle`, launched from `sway/scripts/idle.sh` (restarted on every 
 
 Lock screen (`sway/scripts/lock.sh`):
 - Shows the current random wallpaper as background (falls back to solid black)
-- Ring color randomized each lock from the 12-color burn-in palette
+- Ring and key-press colors randomized each lock from a 12-color Tokyo Night palette (its own copy in `lock.sh`)
 - Ring position randomized each lock (both axes)
 - Ring always visible (`--indicator-idle-visible`) — clearly indicates locked state
 - Tokyo Night colors for verify / wrong-password states
