@@ -154,6 +154,10 @@ for i in "${!gpus[@]}"; do
     tooltip="${tooltip:+${tooltip}\n\n}${section}"
 done
 
+# The fans (fans.sh), once after all GPUs.
+fans=$("$(dirname "$0")/fans.sh")
+[ -n "$fans" ] && tooltip="${tooltip}\n\n${fans}"
+
 # Escape newlines for JSON
 tooltip_json=$(printf '%s' "$tooltip" | sed ':a;N;$!ba;s/\n/\\n/g')
 

@@ -98,7 +98,7 @@ FLIPPED=$((RANDOM % 2))
 # physical side FLIPPED sends a group to. Media is the one exception kept
 # as a single opaque element, so its internal prev/track/next/visualizer
 # order never gets reversed along with everything else.
-INFO_ITEMS=(cpu temperature memory "custom/gpu" disk battery)
+INFO_ITEMS=("custom/cpu" temperature memory "custom/gpu" disk battery)
 INFO_SHUFFLED=($(printf '%s\n' "${INFO_ITEMS[@]}" | shuf))
 INFO_GROUP=()
 for m in "${INFO_SHUFFLED[@]}"; do INFO_GROUP+=("\"$m\""); done
@@ -135,7 +135,7 @@ fi
 # ── 3. Build runtime waybar config ───────────────────────────────────────
 sed \
   -e "s/\"position\": \"[^\"]*\"/\"position\": \"$POSITION\"/" \
-  -e "s|\"modules-left\": \[\"sway/workspaces\", \"cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\"\]|\"modules-left\": [$MODULES_LEFT]|" \
+  -e "s|\"modules-left\": \[\"sway/workspaces\", \"custom/cpu\", \"temperature\", \"memory\", \"custom/gpu\", \"disk\", \"battery\"\]|\"modules-left\": [$MODULES_LEFT]|" \
   -e "s|\"modules-right\": \[\"custom/mpris-prev\", \"custom/mpris-now\", \"custom/mpris-next\", \"custom/cava\", \"pulseaudio#source\", \"pulseaudio\", \"backlight\", \"custom/notification\", \"tray\"\]|\"modules-right\": [$MODULES_RIGHT]|" \
   -e "s/∶/$CLOCK_SEP/g" \
   "$WAYBAR_TEMPLATE" > "$WAYBAR_RUNTIME"

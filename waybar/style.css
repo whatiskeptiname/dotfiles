@@ -24,7 +24,7 @@
 #custom-mpris-now,
 #custom-mpris-next,
 #custom-cava,
-#cpu,
+#custom-cpu,
 #disk,
 #backlight,
 #pulseaudio,
@@ -37,7 +37,7 @@
     border-bottom: 2px solid transparent;
 }
 
-#cpu            { border-bottom-color: @green;  background: @vitals-bg; }
+#custom-cpu     { border-bottom-color: @green;  background: @vitals-bg; }
 #custom-gpu     { border-bottom-color: @green;  background: @vitals-bg; }
 #temperature    { border-bottom-color: @yellow; background: @vitals-bg; }
 #memory         { border-bottom-color: @blue;   background: @vitals-bg; }
@@ -99,14 +99,14 @@
 #custom-pomodoro.ready  { color: @yellow; }
 
 /* State colors */
-#cpu.critical,
+#custom-cpu.critical,
 #memory.critical,
 #battery.critical,
 #temperature.critical {
     color: @red;
 }
 
-#cpu.warning,
+#custom-cpu.warning,
 #memory.warning,
 #battery.warning,
 #temperature.warning {
