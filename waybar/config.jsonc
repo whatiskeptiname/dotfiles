@@ -75,7 +75,7 @@
     "custom/cpu": {
         "exec": "~/.config/waybar/scripts/cpu.sh",
         "return-type": "json",
-        "format": "󰘚 {}%",
+        "format": " {}%",
         "interval": 1,
         "tooltip": true
     },
@@ -101,7 +101,7 @@
     },
 
     "memory": {
-        "format": "󰍛 {used:.1f}G",
+        "format": " {used:.1f}G",
         "tooltip-format": "{used:.1f}G used of {total:.1f}G ({percentage}%)",
         "interval": 1
     },
