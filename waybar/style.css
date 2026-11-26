@@ -111,7 +111,10 @@
 }
 
 /* Low battery on battery power: the cell pulses red (critical = 15% or
-   less, set in config.jsonc). battery-alert.sh sends the notifications. */
+   less, set in config.jsonc). battery-alert.sh sends the notifications.
+   Clicking the cell stops the pulse until the next plug-in: battery-pulse.sh
+   rewrites the animation-name line below in the live stylesheet, so keep
+   it exactly "animation-name: battery-low;". */
 @keyframes battery-low {
     to { background-color: #f7768e; color: #08080b; }
 }

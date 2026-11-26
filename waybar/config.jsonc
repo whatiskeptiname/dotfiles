@@ -4,6 +4,9 @@
     "position": "top",
     "height": 30,
     "spacing": 4,
+    // Restyle when the stylesheet changes, without restarting modules.
+    // battery-pulse.sh relies on it to stop the low-battery pulse on click.
+    "reload_style_on_change": true,
 
     "modules-left": ["sway/workspaces", "custom/cpu", "memory", "custom/gpu", "disk", "battery"],
     "modules-center": ["custom/pomodoro"],
@@ -115,6 +118,9 @@
         // not charging (charge threshold / held): power plug. On AC and full:
         // battery with a check mark.
         // Click toggles the time (left on battery / to full while charging).
+        // While the cell pulses (low on battery), a click only stops the
+        // pulse until the next plug-in: battery-pulse.sh reloads the bar,
+        // which undoes the time toggle that click made.
         // No format-charging/-discharging on purpose: a status format would
         // override format-alt and break the toggle.
         "format": "{icon} {capacity}%",
@@ -124,6 +130,7 @@
         "format-full": "{icon} {capacity}%",
         "format-unknown": "{icon} {capacity}%",
         "format-time": "{H}∶{M:02}",
+        "on-click": "~/.config/waybar/scripts/battery-pulse.sh off",
         "tooltip-format":              "On battery · drawing {power:.1f} W · {capacity}%\n{time} left\nHealth {health}% · {cycles} cycles",
         "tooltip-format-charging":     "Charging at {power:.1f} W · {capacity}%\nFull in {time}\nHealth {health}% · {cycles} cycles",
         "tooltip-format-not-charging": "Plugged in · not charging · {capacity}%\nHealth {health}% · {cycles} cycles",

@@ -306,10 +306,16 @@ Plays the freedesktop `power-plug` / `power-unplug` sounds when the charger is
 connected or removed. Started once per session from `sway/config`.
 
 ### Low Battery (`sway/scripts/battery-alert.sh`)
-- On battery, a notification at **20, 15, 10, 7, 5 and 3%**. Each one replaces the
+- On battery, a notification at **20, 15, 10 and 7%**. Each one replaces the
   last, with a warning sound. They use critical urgency, which swaync still shows
   in **Do Not Disturb**, and stay until dismissed. Plugging in clears it
-- The bar's battery cell pulses red at 15% or less while on battery
+- At **5%** the laptop goes to sleep (suspend) by itself, after a **60-second
+  countdown** warning that updates on screen and sounds at the start and at 10 s
+  left. Plugging in cancels it. Woken while still that low on battery, it counts
+  down again. The screen locks before sleep as usual
+- The bar's battery cell pulses red at 15% or less while on battery. Clicking it
+  stops the pulse (it stays red) until the charger is next plugged in; that
+  click doesn't show the remaining time. After that, clicks toggle it as usual
 - Started once per session from `sway/config`
 
 ### Music Cell (waybar, beside the clock)
