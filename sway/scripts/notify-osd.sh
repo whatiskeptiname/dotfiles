@@ -6,9 +6,12 @@
 case "$1" in
     dnd-toggle)
         if [ "$(swaync-client -D)" = "false" ]; then
-            notify-send -h string:synchronous:dnd "󰂛 Focus Mode" "Notifications muted"
-            sleep 1
+            # DND on first, so the toggle is instant. The popup is critical
+            # because swaync still shows those during DND; it ignores the
+            # timeout on critical ones, so close it here after a moment.
             swaync-client -dn >/dev/null
+            id=$(notify-send -p -u critical -h string:synchronous:dnd "󰂛 Focus Mode" "Notifications muted")
+            (sleep 1.5; swaync-client --close "$id" >/dev/null) &
         else
             swaync-client -df >/dev/null
             notify-send -h string:synchronous:dnd "󰂚 Focus Mode" "Notifications unmuted"

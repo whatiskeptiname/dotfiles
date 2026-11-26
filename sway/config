@@ -244,6 +244,7 @@ exec_always sh -c 'pkill -x swaync; swaync'  # notification daemon
 exec swayosd-server   # OSD for volume/brightness
 exec playerctld daemon  # track the active MPRIS player, so bare `playerctl` doesn't read a stale Stopped one
 exec $HOME/.config/sway/scripts/charger-sound.sh  # sound on charger plug/unplug
+exec $HOME/.config/sway/scripts/battery-alert.sh  # low-battery alerts, shown even in DND
 exec nm-applet --indicator  # wifi (tray)
 exec blueman-applet   # bluetooth (tray)
 

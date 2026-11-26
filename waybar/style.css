@@ -110,6 +110,21 @@
     background: unset;
 }
 
+/* Low battery on battery power: the cell pulses red (critical = 15% or
+   less, set in config.jsonc). battery-alert.sh sends the notifications. */
+@keyframes battery-low {
+    to { background-color: #f7768e; color: #08080b; }
+}
+
+#battery.critical.discharging {
+    color: #f7768e;
+    animation-name: battery-low;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
 /* Workspaces */
 #workspaces button {
     color: @workspace-fg;

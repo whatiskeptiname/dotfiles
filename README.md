@@ -38,8 +38,8 @@ Sway + Waybar setup on Fedora (Wayland). Includes a legacy i3 + polybar config i
 | `brightnessctl` | Brightness control |
 | `swayosd` | On-screen display for volume/brightness/mic |
 | `swaync` | Notification center daemon |
-| `libnotify` / `notify-send` | Popups for focus mode (DND) and pomodoro phase changes |
-| `pipewire-utils` / `pw-play` | Plays the charger plug/unplug and pomodoro sounds |
+| `libnotify` / `notify-send` | Popups for focus mode (DND), pomodoro phase changes and low battery |
+| `pipewire-utils` / `pw-play` | Plays the charger, low-battery and pomodoro sounds |
 | `sound-theme-freedesktop` | The sound files those use (`/usr/share/sounds/freedesktop/stereo/`) |
 | `playerctl` | MPRIS media control — drives the waybar music cell (`playerctld` daemon, autostarted by sway, makes it follow the active player) |
 | `cava` | Audio spectrum analyzer — feeds the waybar music cell's visualizer |
@@ -131,6 +131,7 @@ ln -s ~/Documents/self/dotfiles/sway/config                    ~/.config/sway/co
 ln -s ~/Documents/self/dotfiles/sway/environment               ~/.config/sway/environment
 ln -s ~/Documents/self/dotfiles/sway/scripts/burn-in.sh          ~/.config/sway/scripts/burn-in.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/charger-sound.sh    ~/.config/sway/scripts/charger-sound.sh
+ln -s ~/Documents/self/dotfiles/sway/scripts/battery-alert.sh    ~/.config/sway/scripts/battery-alert.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/idle.sh             ~/.config/sway/scripts/idle.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/lock.sh             ~/.config/sway/scripts/lock.sh
 ln -s ~/Documents/self/dotfiles/sway/scripts/powermenu.sh        ~/.config/sway/scripts/powermenu.sh
@@ -303,6 +304,13 @@ One cell is both the clock and a pomodoro timer.
 ### Charger Sound (`sway/scripts/charger-sound.sh`)
 Plays the freedesktop `power-plug` / `power-unplug` sounds when the charger is
 connected or removed. Started once per session from `sway/config`.
+
+### Low Battery (`sway/scripts/battery-alert.sh`)
+- On battery, a notification at **20, 15, 10, 7, 5 and 3%**. Each one replaces the
+  last, with a warning sound. They use critical urgency, which swaync still shows
+  in **Do Not Disturb**, and stay until dismissed. Plugging in clears it
+- The bar's battery cell pulses red at 15% or less while on battery
+- Started once per session from `sway/config`
 
 ### Music Cell (waybar, beside the clock)
 Visible whenever a player is **Playing** or **Paused** — only disappears when fully stopped:
