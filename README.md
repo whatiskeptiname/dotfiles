@@ -213,7 +213,22 @@ Both units hang off `sway-session.target`, so they start and stop with sway.
 For per-website / per-video time, also install the **ActivityWatch Web Watcher**
 extension from the Chrome Web Store.
 
-### 11. Start sway
+### 11. Claude Code notifications (optional)
+
+```bash
+mkdir -p ~/.claude/hooks
+ln -s ~/Documents/self/dotfiles/claude/hooks/claude-notify.sh ~/.claude/hooks/claude-notify.sh
+# Merge the hooks and preferences into your settings, keeping everything else:
+[ -f ~/.claude/settings.json ] || echo '{}' > ~/.claude/settings.json
+jq -s '.[0] * .[1]' ~/.claude/settings.json ~/Documents/self/dotfiles/claude/settings.example.json \
+  > /tmp/claude-settings.json && mv /tmp/claude-settings.json ~/.claude/settings.json
+```
+
+`claude/settings.example.json` holds only the shareable part of the settings.
+The real `~/.claude/settings.json` isn't symlinked: it also holds private,
+per-machine data (work context for auto mode), which stays out of this repo.
+
+### 12. Start sway
 
 Log out and select **Sway** from your display manager, or run `sway` from a TTY.
 
@@ -317,6 +332,16 @@ connected or removed. Started once per session from `sway/config`.
   stops the pulse (it stays red) until the charger is next plugged in; that
   click doesn't show the remaining time. After that, clicks toggle it as usual
 - Started once per session from `sway/config`
+
+### Claude Code Notifications (`claude/hooks/claude-notify.sh`)
+Run by Claude Code's `Stop` and `Notification` hooks:
+- **Done** — `Claude · <project> · done in 1m 10s`, with your request and the
+  first line of Claude's reply
+- **Needs you** — permission prompts show the command or file waiting for
+  approval; idle prompts show your last request. Permission prompts and questions
+  are critical, so they show during Do Not Disturb
+- **Click** a notification to focus the window Claude runs in
+- One notification per session, replaced by the next; a sound for each
 
 ### Music Cell (waybar, beside the clock)
 Visible whenever a player is **Playing** or **Paused** — only disappears when fully stopped:
